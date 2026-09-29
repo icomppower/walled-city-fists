@@ -6,7 +6,7 @@ not `done`.
 | Stage | Status | Gate numbers |
 |---|---|---|
 | 0 Fork + strip | done | copy of hk-freedom-voxel `3797d28`; HK chars / chapters / maps / skins / story deleted (−54 files); Node 6/6 logs identical (finals 90a1a382 64989ea8 6c41979e 2c32ffdc 6a95e25b b7fe682c = base); rig 54/54, dual PASS; bot WIN ch1 zhaoyun 普通 (4:41, S); Chrome: title 城寨 拳王 / WALLED CITY FISTS, menu 操作說明 only (故事 / 自由 with ?dev), no base-game text, 0 errors; ch1 scroll 6/6, crowd 94/94, checkpoints 6/6 × 2; touch twin 7/7, touch UI 13/13 |
-| 0 Vercel | pending | |
+| 0 Vercel | done | project `walled-city-fists` (sharkgundams-projects), git-connected to icomppower/walled-city-fists: production = main, previews per branch; first git deploy (`23754d4`) READY in 5 s; https://walled-city-fists.vercel.app 200, title screen, 0 console errors (remote smoke) |
 | 1 阿鐵 tit | pending | |
 | 2 阿翠 chui | pending | |
 | 3 Enemy side | pending | |
@@ -20,7 +20,9 @@ not `done`.
 | 10 Critic rounds | pending | |
 | 11 Ship | pending | |
 
-**Next action:** stage 0 Vercel project.
+**Next action:** stage 1 阿鐵 tit.
+
+**Live:** https://walled-city-fists.vercel.app
 
 ## Contract ids (Contracts page)
 

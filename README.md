@@ -4,7 +4,7 @@ An original 1970s kung fu musou on the Voxel Musou engine. 九龍城寨, 1975: 3
 top. Two neighbours who know kung fu take the city back, floor by floor, from the alleys up to the Serpent King's tower.
 The Walled City is a real place; every character, gang and event is fictional.
 
-**Status:** under construction (see `PROGRESS.md`). Live: _pending_.
+**Status:** under construction (see `PROGRESS.md`). Live: **https://walled-city-fists.vercel.app**
 
 Plain ES modules, Three.js r186 vendored, deterministic fixed 60 Hz simulation, no build step. Copied from
 [icomppower/hk-freedom-voxel](https://github.com/icomppower/hk-freedom-voxel) (engine hooks: touch controls, mobile tier,
