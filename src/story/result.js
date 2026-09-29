@@ -22,6 +22,7 @@ export function createResult(el, flow) {
     if (!b) return;
     if (b.dataset.act === 'retry') leave(() => flow.go('loading', { mode: ctx.mode, char: ctx.char, chapter: ctx.chapter, art: ctx.art, retry: true }));
     else if (b.dataset.act === 'ending') leave(() => flow.go('ending', { mode: ctx.mode, char: ctx.char, chapter: ctx.chapter }));
+    else if (b.dataset.act === 'after') leave(() => flow.go('cutscene', { id: resolveChapter(ctx.chapter, ctx.char).AFTER, then: ctx.then || 'title' }));
     else leave(() => flow.go('title'));
   });
   const nav = createNav({
@@ -57,7 +58,7 @@ export function createResult(el, flow) {
           ? epi.zh.map((z, i) => `<p>${z}<small>${epi.en[i]}</small></p>`).join('')
           : `<p>${loseZh}<small>${loseEn}</small></p>`}</div>
         <div class="rs-btns">${win
-          ? `<button data-act="${end ? 'ending' : 'title'}">繼續<small>CONTINUE</small></button>`
+          ? `<button data-act="${end ? 'ending' : win && CH.AFTER ? 'after' : 'title'}">繼續<small>CONTINUE</small></button>`
           : '<button data-act="retry">再戰<small>RETRY</small></button><button data-act="title" class="sub">返回<small>TITLE</small></button>'}</div>
       </div>
       <footer class="ui-foot">${win ? '' : '<span><kbd>←</kbd><kbd>→</kbd>選擇<small>Select</small></span>'}

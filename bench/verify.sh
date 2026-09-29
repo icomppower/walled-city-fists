@@ -24,6 +24,6 @@ g node bench/harness/shots-scroll.mjs kc3 --char tit; g node bench/harness/shots
 echo "== Chrome: crowd, result cards"; g node bench/harness/crowdprobe.mjs ch1; g node bench/harness/result-fit.mjs ../out
 echo "== Chrome: ch1 checkpoints";   g node bench/harness/xcheck.mjs ch1-zhaoyun 3600; g node bench/harness/xcheck.mjs ch1-huangzhong 3600
 echo "== Chrome: Musou frame time"; g node bench/chars/perf.mjs tit chui zhaoyun
-echo "== Chrome: ending flow";       g node bench/harness/scroll-flow.mjs kc4
+echo "== Chrome: ending flow, cutscenes"; g node bench/harness/scroll-flow.mjs kc4; g node bench/harness/cut-shots.mjs
 echo "== Chrome: touch hook";        g node bench/harness/touch-twin.mjs; g node bench/harness/touch-ui.mjs
 echo "ALL GATES GREEN"

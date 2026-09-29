@@ -39,6 +39,7 @@ import { inkWipe, inkBoot, wiping, createNav, sfx, replay } from './ui/menu.js';
 import { createPrologue } from './story/prologue.js';
 import { createTouch } from './ui/touch.js';
 import { createResult } from './story/result.js';
+import { createCutscene } from './story/cutscenes/player.js';
 import { difficulty, recordClear } from './core/difficulty.js';
 
 const params = new URLSearchParams(location.search);
@@ -98,7 +99,7 @@ let lastRenderFrame = 0;
 function render(real) {
   const dt = real ?? Math.min(10, Math.max(0, (game.frame - lastRenderFrame) / 60));
   lastRenderFrame = game.frame;
-  heroView.root.visible = state !== 'title' && state !== 'select';   // no officer chosen yet: the field stands empty
+  heroView.root.visible = state !== 'title' && state !== 'select' && state !== 'cutscene';   // no officer chosen yet / a cutscene: no gameplay hero
   heroView.update(Math.min(dt, 0.1));
   crowdView.update(dt, camRig.camera);
   vfx.update(dt);
@@ -232,7 +233,9 @@ async function deploy(c) {
 const screens = {
   title: createTitle($('title'), flow), select: createSelect($('select'), flow), loading: createLoading($('loading')),
   prologue: createPrologue($('prologue'), flow), result: createResult($('result'), flow),
-  ending: createPrologue($('ending'), flow, 'ENDING'),              // after the final chapter's win (result → ending → title)
+  ending: createPrologue($('ending'), flow, 'ENDING'),              // after the final chapter's win (result → ending → end scene → title)
+  // between-chapter scenes and the end scene (story/cutscenes): on the scene's own map, the idle field cleared first
+  cutscene: createCutscene($('cutscene'), flow, { world, scene, mobile: MOBILE, setMap, clearField: () => { game.crowd.reset(); game.story.fx = null; } }),
 };
 // a win records the clear (上級 / 修羅 opens 修羅: unlock = the result screen announces it)
 on('story:end', (e) => {

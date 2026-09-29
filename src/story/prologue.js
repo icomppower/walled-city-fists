@@ -8,7 +8,8 @@
 // [data-id] + .pl-arw arrows: story/scrollkit.js), PROLOGUE / STAMP, and optionally ENDING / ENDING_STAMP and TRIBUTE
 // { title {zh, en}, zh: [lines], en: [lines], link {href, zh, en} }. Card = { cols: [≤ 7 chars × 3], en, show: [mark ids],
 // focus: [x, y, zoom] } or branched on the hero { <char id>: { cols, en }, show, focus }.
-// ctx in: { mode: 'story', char, chapter }. Prologue done → flow.go('battle', ctx); ending done → ink wipe → title.
+// ctx in: { mode: 'story', char, chapter }. Prologue done → flow.go('battle', ctx); ending done → ink wipe → the chapter's
+// END_SCENE cutscene if it has one (story/cutscenes), else the title.
 // Render-side DOM only (wall-clock timers); nothing here touches the sim.
 import { resolveChapter } from './chapters.js';
 import { inkWipe } from '../ui/menu.js';
@@ -96,7 +97,7 @@ export function createPrologue(el, flow, part = 'PROLOGUE') {
       return;
     }
     phase = 'out';
-    if (ending) { clearTimeout(timer); inkWipe(() => flow.go('title')); return; }
+    if (ending) { clearTimeout(timer); inkWipe(() => (CH.END_SCENE ? flow.go('cutscene', { id: CH.END_SCENE, then: 'title' }) : flow.go('title'))); return; }
     el.classList.add('out');
     later(() => flow.go('battle', ctx), 0.55);          // index.html #prologue.out: the fade off the field
   }

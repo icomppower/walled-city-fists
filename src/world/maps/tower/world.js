@@ -60,7 +60,8 @@ export function buildTower(scene, root) {
   for (let k = 0; k < 8; k++) { const x = -12 + k * 3.4, z = -132; const L = lantern(); boxes.push(...place(L.body, x, 5.6, z)); glows.push(...place(L.glow, x, 5.6, z)); lampAt.push([x, 5.4, z]); }
   boxes.push(bx([30, 0.3, 40], [0, 8.2, -130], 0x2a2426));
   // the light well: walls round the shaft (tenement faces with lit windows), balcony railings on the well side, the bridge
-  for (const [x0, z0, x1, z1, yaw] of [[-14, -110, -14, -52, Math.PI / 2], [14, -52, 14, -110, -Math.PI / 2], [-14, -110.5, 14, -110.5, 0], [-14, -51.5, -4, -51.5, Math.PI], [4, -51.5, 14, -51.5, Math.PI]]) {
+  // (the south wall leaves the first balcony run's way in from the lobby open: x 6 … 12)
+  for (const [x0, z0, x1, z1, yaw] of [[-14, -110, -14, -52, Math.PI / 2], [14, -52, 14, -110, -Math.PI / 2], [-14, -110.5, 6, -110.5, 0], [12, -110.5, 14, -110.5, 0], [-14, -51.5, -4, -51.5, Math.PI], [4, -51.5, 14, -51.5, Math.PI]]) {
     const L = Math.hypot(x1 - x0, z1 - z0), cx = (x0 + x1) / 2, cz = (z0 + z1) / 2;
     const bl = block(L, 3, 34, Math.round(cx * 7 + cz), { faces: [0], litP: 0.45, cages: 0.4, laundry: 0.4 });
     const off = 1.5, nx = Math.sin(yaw + Math.PI), nz = Math.cos(yaw + Math.PI);

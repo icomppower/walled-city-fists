@@ -11,6 +11,7 @@
 //   allies [{ x, z, n, cols, hold }]   story start: the friendly ranks (crowd.spawnAllies)
 //   skin { foe, ally }  crowd skins (src/chars/officers/index.js SKINS; default: the Wei army / Shu allies)
 //   sides.names { us: {zh, en}, them: {zh, en} }   who the HUD's reinforcement banners name
+//   AFTER              cutscene id played after a win (story/cutscenes/data.js) · END_SCENE: after the ENDING scroll
 import * as ch1 from './ch1.js';
 import * as kc1 from './kc1.js';
 import * as kc2 from './kc2.js';
@@ -26,28 +27,28 @@ const LIST = [
     allies: [-1, 1].map((sx) => ({ x: sx * 5.575, z: -121.6, n: 12, cols: 4, hold: true })),
   },
   {
-    ...kc1, id: 'kc1', map: 'alleys', cast: ['tit', 'chui'],
+    ...kc1, id: 'kc1', map: 'alleys', cast: ['tit', 'chui'], AFTER: 'between1',
     title: { small: '第一章', zh: '巷戰', en: 'CHAPTER I · THE ALLEYS' },
     sides: { us: '坊', them: '蛇', names: { us: { zh: '街坊', en: 'Residents' }, them: { zh: '黑蛇幫', en: 'Black Serpent' } } },
     skin: { foe: 'serpent', ally: 'resident' },
     allies: [-1, 1].map((sx) => ({ x: sx * 5, z: -136, n: 8, cols: 4, hold: true })),   // market neighbours by 阿鐵's stall
   },
   {
-    ...kc2, id: 'kc2', map: 'rooftops', cast: ['tit', 'chui'],
+    ...kc2, id: 'kc2', map: 'rooftops', cast: ['tit', 'chui'], AFTER: 'between2',
     title: { small: '第二章', zh: '天台', en: 'CHAPTER II · THE ROOFTOPS' },
     sides: { us: '坊', them: '蛇', names: { us: { zh: '街坊', en: 'Residents' }, them: { zh: '黑蛇幫', en: 'Black Serpent' } } },
     skin: { foe: 'serpent', ally: 'resident' },
     allies: [{ x: 6, z: -140, n: 6, cols: 3, hold: true }],                                  // neighbours woken by the fight
   },
   {
-    ...kc3, id: 'kc3', map: 'factories', cast: ['tit', 'chui'],
+    ...kc3, id: 'kc3', map: 'factories', cast: ['tit', 'chui'], AFTER: 'between3',
     title: { small: '第三章', zh: '工場', en: 'CHAPTER III · THE FACTORIES' },
     sides: { us: '坊', them: '差', names: { us: { zh: '街坊', en: 'Residents' }, them: { zh: '金牙嘅人', en: 'Gold-Tooth\'s men' } } },
     skin: { foe: 'khaki', ally: 'resident' },
     allies: [-1, 1].map((sx) => ({ x: sx * 5, z: -146, n: 6, cols: 3, hold: true })),       // residents come in with lamps
   },
   {
-    ...kc4, id: 'kc4', map: 'tower', cast: ['tit', 'chui'],
+    ...kc4, id: 'kc4', map: 'tower', cast: ['tit', 'chui'], END_SCENE: 'end',
     title: { small: '第四章', zh: '蛇王樓', en: 'CHAPTER IV · THE SERPENT TOWER' },
     sides: { us: '坊', them: '蛇', names: { us: { zh: '街坊', en: 'Residents' }, them: { zh: '黑蛇幫', en: 'Black Serpent' } } },
     skin: { foe: 'serpent', ally: 'resident' },
