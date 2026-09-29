@@ -126,7 +126,7 @@ export function buildAlleys(scene, root) {
   const lanternAt = [];
   for (let k = 0; k < 12; k++) { const x = -15 + k * 2.7, z = 24 + Math.sin(k * 0.9) * 0.6, L = lantern(); boxes.push(...place(L.body, x, ground(x, z) + 4.2, z)); lanternAt.push([x, ground(x, z) + 4.35, z]); }
   boxes.push(bx([32, 0.03, 0.03], [0, 4.8, 24], 0x1a1a1a));
-  const propMat = lensClear(propMaterial(), 2.6);                     // walls within 2.6 m of the lens are cut away (the camera may sit 3 m past the walk edge)
+  const propMat = lensClear(propMaterial(), 4);                       // walls within 4 m of the lens are cut away (the camera may sit 3 m past the walk edge; the Musou's wide shots in the 6 m lane)
   const props = new THREE.Mesh(merge(boxes), propMat); props.castShadow = props.receiveShadow = true; root.add(props);
   const litMat = new THREE.MeshBasicMaterial({ vertexColors: true, color: new THREE.Color(1.0, 0.92, 0.8) });
   const litMesh = new THREE.Mesh(merge(lit), litMat); root.add(litMesh);
@@ -208,7 +208,7 @@ export function buildAlleys(scene, root) {
       leaves.forEach((m, k) => { m.rotation.y = (k ? 1 : -1) * doorOpen * 1.7; });
       // the lanterns relight one after another (fx.lanterns 0 → 1), the hall's warm light with them
       lanK += ((fx.lanterns ?? 0) - lanK) * Math.min(1, dt * 1.5);
-      lanMat.color.setRGB(0.25 + 2.8 * lanK, 0.05 + 0.9 * lanK, 0.03 + 0.4 * lanK); hallLight.intensity = 60 * lanK;
+      lanMat.color.setRGB(0.55 + 2.5 * lanK, 0.1 + 0.85 * lanK, 0.05 + 0.4 * lanK); hallLight.intensity = 14 + 50 * lanK;   // unlit: a faint red glow; the hall's door light
       // drips: short streaks falling from the pipes
       const a = dgeo.attributes.position;
       for (let i = 0; i < DN; i++) {

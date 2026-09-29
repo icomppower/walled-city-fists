@@ -1,12 +1,12 @@
 // Phone reachability gate (stage 9, mobile lane): on a touch phone in landscape (844×390, hasTouch) every step from boot to a
 // battle is done with real taps (page.touchscreen at the element's centre, after checking elementFromPoint lands on it):
-// wake the title → 故事模式 → 普通 → 小美's card → 出陣 → the chapter list → hk2 → 出陣 → the prologue (tap through) → the
-// battle with the touch pad up. Also the title's 致敬 opens the tribute card and a tap returns to the title. Shots →
-// bench/shots/9/phone/. Exit 1 on any unreachable step or console error.
+// wake the title → 影院 (one scene, tapped through back to the gallery) → 故事 → 新遊戲 → 普通 → 阿翠's card → 出陣 (the
+// chapter is fixed: kc1) → the prologue (tap through) → the battle with the touch pad up; the pause menu. Shots →
+// bench/shots/10/phone/. Exit 1 on any unreachable step or console error.
 import { mkdirSync } from 'node:fs';
 import { chromium } from 'playwright-core';
 import { serve } from './browser.mjs';
-const out = new URL('../shots/9/phone/', import.meta.url).pathname; mkdirSync(out, { recursive: true });
+const out = new URL('../shots/10/phone/', import.meta.url).pathname; mkdirSync(out, { recursive: true });
 const srv = await serve(), browser = await chromium.launch({ channel: 'chrome', args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
 const ctx = await browser.newContext({ viewport: { width: 844, height: 390 }, hasTouch: true, isMobile: true, deviceScaleFactor: 2.625 });
 const page = await ctx.newPage(), errors = [];
@@ -32,18 +32,21 @@ async function tap(name, sel, text = '') {
 await page.goto(srv.url + '?x');
 await page.waitForFunction(() => window.__vm?.state === 'title', null, { timeout: 60000 }); await page.waitForTimeout(2500);
 await page.touchscreen.tap(422, 200); await page.waitForTimeout(1200);                 // "press any key" card
-await tap('致敬', '#title .t-main button', '致敬');
-await page.waitForTimeout(3000);
-ok('tribute card shows', await page.evaluate(() => __vm.state === 'ending' && document.getElementById('ending').classList.contains('tribute')));
-await page.touchscreen.tap(422, 200); await page.waitForTimeout(3000);
-ok('a tap on the tribute returns to the title', await page.evaluate(() => __vm.state === 'title'));
-await tap('故事模式', '#title .t-main button', '故事模式');
+await tap('影院', '#title .t-main button', '影院');
+await tap('燈亮 (a scene)', '#title .t-sub button', '燈亮');
+await page.waitForTimeout(1500);
+ok('the scene plays', await page.evaluate(() => __vm.state === 'cutscene'));
+await tap('跳過 skip', '#cutscene .cs-skip');
+await page.waitForTimeout(2000);
+ok('skip → back to 影院', await page.evaluate(() => __vm.state === 'title' && document.getElementById('title').classList.contains('sub')));
+await page.evaluate(() => document.getElementById('title').dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape', bubbles: true })));
+await page.keyboard.press('Escape'); await page.waitForTimeout(800);
+await tap('故事', '#title .t-main button', '故事');
+await tap('新遊戲', '#title .t-sub button', '新遊戲');
 await tap('普通', '#title .t-dif button', '普通');
 await page.waitForTimeout(1500);
 ok('select screen up', await page.evaluate(() => __vm.state === 'select'));
-await tap('小美 card', '#select [data-i]', '小美');
-await tap('出陣 (chapter list)', '#select .s-go');
-await tap('hk2 立法會', '#select .s-chs button, #select .s-chs [data-c], #select .s-chs > *', '立法會');
+await tap('阿翠 card', '#select [data-i]', '阿翠');
 await tap('出陣 (deploy)', '#select .s-go');
 await page.waitForFunction(() => ['prologue', 'battle'].includes(__vm.state), null, { timeout: 60000 }).catch(() => {});
 ok('prologue / battle reached', await page.evaluate(() => ['prologue', 'battle'].includes(__vm.state)));
@@ -51,7 +54,7 @@ for (let k = 0; k < 8 && (await page.evaluate(() => __vm.state)) === 'prologue';
 await page.waitForFunction(() => __vm.state === 'battle', null, { timeout: 30000 }).catch(() => {});
 await page.waitForTimeout(2500);
 const b = await page.evaluate(() => ({ state: __vm.state, ch: __vm.game.chapter, who: __vm.game.hero.char.id, pad: !document.getElementById('touch').hidden }));
-ok('battle: hk2 as 小美 with the touch pad', b.state === 'battle' && b.ch === 'hk2' && b.who === 'siumei' && b.pad, JSON.stringify(b));
+ok('battle: kc1 as 阿翠 with the touch pad', b.state === 'battle' && b.ch === 'kc1' && b.who === 'chui' && b.pad, JSON.stringify(b));
 await page.screenshot({ path: `${out}${String(shot++).padStart(2, '0')}-battle.png` });
 await tap('pause', '#touch .b-pause');
 ok('pause menu open', await page.evaluate(() => __vm.paused));

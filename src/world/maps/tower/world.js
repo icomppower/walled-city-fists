@@ -47,7 +47,8 @@ export function buildTower(scene, root) {
       if (id.startsWith('balc')) return (Math.round(z) & 1) ? 0x5a5a56 : 0x524e4a;
       if (id === 'gatehouse') return 0x4a4a4e;
       if (id === 'stair') return (Math.floor(z * 3) & 1) ? 0x6a665e : 0x54504a;
-      return hash01(Math.round(x), Math.round(z), 5) < 0.3 ? 0x3a5a36 : 0x6a665a;                           // the garden: grass + paving
+      const bed = (Math.abs(x) > 9 && Math.abs(x) < 16) || (z > 10 && z < 21 && Math.abs(x) > 3);           // the garden: grass beds round a paved centre
+      return bed ? (hash01(Math.round(x), Math.round(z), 5) < 0.25 ? 0x44663a : 0x3a5a32) : ((Math.round(x * 0.5) + Math.round(z * 0.5)) & 1 ? 0x7a746a : 0x6e685e);
     },
     rise: (x, z, out) => (z < -54 && z > -110 && Math.abs(x) < 14 ? -Math.min(16, out * 5) : Math.min(8, out * 3)),   // the well drops; walls rise elsewhere
   });

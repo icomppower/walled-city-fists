@@ -27,5 +27,7 @@ echo "== Chrome: Musou frame time"; g node bench/chars/perf.mjs tit chui zhaoyun
 echo "== Chrome: ending flow, cutscenes"; g node bench/harness/scroll-flow.mjs kc4; g node bench/harness/cut-shots.mjs
 echo "== Chrome: modes (故事 / 自由 / 影院)"; g node bench/harness/modes-free.mjs; g node bench/harness/modes-gallery.mjs; g node bench/harness/modes-campaign.mjs
 echo "== Chrome: sound";              g node bench/harness/audio-check.mjs
-echo "== Chrome: touch hook";        g node bench/harness/touch-twin.mjs; g node bench/harness/touch-ui.mjs
+echo "== Chrome: touch hook";        g node bench/harness/touch-twin.mjs; g node bench/harness/touch-ui.mjs; g node bench/harness/phone-flow.mjs
+echo "== Chrome: frame time";        g node bench/maps/perfmap.mjs kc1 kc4
+echo "== Chrome: mobile frame time"; g node bench/maps/perf-mobile.mjs kc1 kc4 --char tit
 echo "ALL GATES GREEN"
