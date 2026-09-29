@@ -17,6 +17,7 @@
 // randomness is Math.random, never the sim RNG. Starts on the first user gesture.
 import { on } from '../core/events.js';
 import { buildBank, makeIR, noiseBuf } from './bank.js';
+import { createKcLayer } from './kcaudio.js';
 
 const rnd = (a, b) => a + (b - a) * Math.random();
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -51,7 +52,9 @@ export function createAudio(game) {
   const last = new Map();                     // throttles
   const lastPick = new Map();
   const B = {};                               // filled progressively by the offline bake (combat sounds first)
-  buildBank(B).then(startBed, (e) => console.warn('audio bank', e));
+  let bankOk; const bankReady = new Promise((r) => { bankOk = r; });
+  buildBank(B).then(() => { startBed(); bankOk(); }, (e) => console.warn('audio bank', e));
+  let bedScale, kc = null;                    // 城寨拳王 layer (kcaudio.js): the base loops' scene level, the layer itself
 
   function start() {
     if (ctx) { if (ctx.state !== 'running') ctx.resume(); return; }
@@ -81,10 +84,12 @@ export function createAudio(game) {
     vox = ctx.createGain(); vox.gain.value = VOX; vox.connect(sides[2]).connect(mix);
     const rev = ctx.createConvolver(); rev.buffer = makeIR();
     revIn = ctx.createGain(); revIn.connect(rev); rev.connect(sides[3]).connect(mix);   // the wash ducks under hits too
-    bedDuck = ctx.createGain(); bedDuck.connect(mix);
+    bedDuck = ctx.createGain(); bedScale = ctx.createGain(); bedDuck.connect(bedScale).connect(mix);
     bedBus = ctx.createGain(); bedBus.connect(sides[1]).connect(bedDuck);
     const bedSend = ctx.createGain(); bedSend.gain.value = 0.4; bedDuck.connect(bedSend).connect(revIn);
     startBed();
+    kc = createKcLayer({ ctx, out: mix, revIn, bedScale, B, game, bankReady });
+    window.__wcfAudio = { ctx, tap: clip, kc };                // bench/harness/audio-check.mjs (peaks, the skip fade)
   }
   addEventListener('pointerdown', start);
   addEventListener('keydown', start);

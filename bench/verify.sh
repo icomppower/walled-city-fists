@@ -25,5 +25,7 @@ echo "== Chrome: crowd, result cards"; g node bench/harness/crowdprobe.mjs ch1; 
 echo "== Chrome: ch1 checkpoints";   g node bench/harness/xcheck.mjs ch1-zhaoyun 3600; g node bench/harness/xcheck.mjs ch1-huangzhong 3600
 echo "== Chrome: Musou frame time"; g node bench/chars/perf.mjs tit chui zhaoyun
 echo "== Chrome: ending flow, cutscenes"; g node bench/harness/scroll-flow.mjs kc4; g node bench/harness/cut-shots.mjs
+echo "== Chrome: modes (故事 / 自由 / 影院)"; g node bench/harness/modes-free.mjs; g node bench/harness/modes-gallery.mjs; g node bench/harness/modes-campaign.mjs
+echo "== Chrome: sound";              g node bench/harness/audio-check.mjs
 echo "== Chrome: touch hook";        g node bench/harness/touch-twin.mjs; g node bench/harness/touch-ui.mjs
 echo "ALL GATES GREEN"

@@ -4,6 +4,8 @@
 // (bake ≈ 0.9 s at boot; combat sounds are ready after ≈ 0.1 s) — and played back by
 // audio.js with random rate / gain / pan, so 50+ hits per second stay cheap and never repeat back to back.
 // Audio variation uses Math.random: it must never touch the sim or visual RNG.
+import { theme } from './kcbank.js';
+
 const SR = 48000;
 const rnd = (a, b) => a + (b - a) * Math.random();
 const pick = (a) => a[Math.floor(Math.random() * a.length)];
@@ -474,6 +476,9 @@ function bakeLoops(B) {
       nz(oc, 0, 18).connect(hl).connect(xf(oc)).connect(hg).connect(d);
       for (let i = 0; i < 90; i++) { const t = rnd(0, 16); nz(oc, t, 0.01).connect(filt(oc, 'bandpass', rnd(2500, 5000), 1.2)).connect(perc(oc, t, 0.0005, rnd(0.003, 0.01), rnd(0.08, 0.25))).connect(pan(oc, rnd(-0.5, 0.5))).connect(d); }
     }),
-    bakeLoop(16, 1, (oc, d) => riff(oc, d)),              // 2 × the drum loop length: both start together and stay locked
+    bakeLoop(16, 1, (oc, d) => theme(oc, d)),             // 城寨拳王's pentatonic theme (kcbank.js), 2 × the drum loop: locked
   ]).then(([drums, bed, music]) => { B.drums = drums; B.bed = bed; B.music = music; });
 }
+
+// shared with the 城寨拳王 layer (./kcbank.js: theme, pads, ambiences, jet)
+export { bake, bakeLoop, xfade, osc, nz, filt, gain, env, perc, curve, shaper, pan, smp, pts, clank, crowdVoice, SR };
