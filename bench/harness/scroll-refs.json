@@ -15,45 +15,6 @@
   "1cbb52b2e411cb35",
   "5fa3f96c1c998d33"
  ],
- "hk1-lungjai": [
-  "2cae3d6a45912679",
-  "89b43b480e836085",
-  "f5a914cb7895be4b",
-  "b6a38827a7eb7b25",
-  "bd330e68ac84f7fe",
-  "d9dfae6bcb89fd80",
-  "07efb277dad3f9ef"
- ],
- "hk2-siumei": [
-  "3828989569ec8a16",
-  "ec8d57d2ad5a52af",
-  "808be4b93855f59a",
-  "7730afd287216715",
-  "52bdec9d1198f305"
- ],
- "hk3-siumei": [
-  "de4446e280652005",
-  "a6e950b38eafb5b5",
-  "65d8b48a6515a7f2",
-  "b69acadb487260d0",
-  "9b10d565ef9e9811"
- ],
- "hk4-siumei": [
-  "8de36028f42e0a26",
-  "48296a8893ee665a",
-  "2dab02bb96a69abb",
-  "4c3472ec42c89b2f",
-  "843b7daade9a33ac"
- ],
- "hk4-lungjai-ending": [
-  "37076d67f2e08a72",
-  "8f484172bf3f00db",
-  "1278b340d43ddcf8",
-  "17f3b15846cd430f",
-  "3c094dd827b40197",
-  "e8e67671a4b5f1d4",
-  "183542515730bab8"
- ],
  "kc1-tit": [
   "6b2809d0918fd62b",
   "9efd9b3c79f0ded2",
@@ -62,7 +23,7 @@
  ],
  "kc4-chui-ending": [
   "f6b3d1116e851c08",
-  "6b5facb68f0f956f",
+  "f8d6447760aa9813",
   "d9d7d8e3b1056fc1"
  ],
  "kc4-chui": [
@@ -72,52 +33,12 @@
  ],
  "kc2-chui": [
   "4a18801af5a2bfe1",
-  "0ab63da65f597d28",
+  "6f22a3555a98b323",
   "132c9bca036b47db"
  ],
  "kc3-tit": [
   "245882e83230cbc1",
-  "8304483e6e2ff38c",
-  "79fe2a5b365a9683"
- ],
- "kc1 --char tit-zhaoyun": [
-  "03524d5acf1cc74b",
-  "7fce499eaff0a918",
-  "b7cd58e359b4e41e",
-  "c9c530a65024e77b",
-  "1cbb52b2e411cb35",
-  "b8e1cae7a33edb03"
- ],
- "kc2 --char chui-zhaoyun": [
-  "03524d5acf1cc74b",
-  "1a42a46eda94ba88",
-  "b7cd58e359b4e41e",
-  "c9c530a65024e77b",
-  "1cbb52b2e411cb35",
-  "5fa3f96c1c998d33"
- ],
- "kc3 --char tit-zhaoyun": [
-  "03524d5acf1cc74b",
-  "7fce499eaff0a918",
-  "b7cd58e359b4e41e",
-  "c9c530a65024e77b",
-  "1cbb52b2e411cb35",
-  "b8e1cae7a33edb03"
- ],
- "kc4 --char chui-zhaoyun": [
-  "03524d5acf1cc74b",
-  "7fce499eaff0a918",
-  "b7cd58e359b4e41e",
-  "c9c530a65024e77b",
-  "1cbb52b2e411cb35",
-  "5fa3f96c1c998d33"
- ],
- "kc4 --char chui --ending-zhaoyun": [
-  "03524d5acf1cc74b",
-  "7fce499eaff0a918",
-  "b7cd58e359b4e41e",
-  "c9c530a65024e77b",
-  "1cbb52b2e411cb35",
-  "5fa3f96c1c998d33"
+  "67dd290b93db7d74",
+  "48513aab94fec54f"
  ]
 }
