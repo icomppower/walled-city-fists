@@ -2,7 +2,8 @@
 // peak through free battles on all four maps (bot at 4× + a Musou each), between2 (the jet's Doppler) and the end scene
 // (the end-title chord) — peak < −1 dBFS; the 城寨 bank bakes; no audio errors; a skipped cutscene's sound fades out in
 // 0.5 s (its bus at ≈ half after 0.25 s, silent after 0.55 s). Generated files (media/audio/index.json, AI Studio): every
-// listed file decodes; each map / cutscene plays its own track where one exists; voiced lines play in battle.
+// listed file decodes; voiced lines play in battle. The synth score: every track bakes, sounds and loops at its bar
+// length; each map / cutscene plays its own track.
 //   node bench/harness/audio-check.mjs
 import { openGame } from './browser.mjs';
 const res = [], ok = (n, v, x = '') => { res.push(v); console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${x ? '  ' + x : ''}`); };
@@ -41,6 +42,15 @@ for (const id of ['between2', 'end']) {
   const r = await P.evaluate(() => ({ peak: window.__peak, rms: window.__rms.reduce((a, v) => a + v, 0) / Math.max(1, window.__rms.length) }));
   ok(`${id} (${id === 'end' ? 'the end chord' : 'the jet Doppler'}): peak < −1 dBFS`, r.peak < 0.891 && r.rms > 0.003, `peak ${(20 * Math.log10(r.peak)).toFixed(1)} dBFS, mean rms ${(20 * Math.log10(r.rms)).toFixed(1)} dBFS`);
 }
+// the synth score: every slot bakes, is not silent, loops at its bar length (once-tracks: at least it)
+const sc = await P.evaluate(async () => { const m = await import('/src/audio/kcscore.js'), r = {};
+  for (const k of m.SLOTS) { const t0 = performance.now(), b = await m.bakeSong(k), S = m.SONGS[k], len = S.bars * 8 * 30 / S.bpm; let pk = 0, ss = 0; const d = b.getChannelData(0);
+    for (let i = 0; i < d.length; i++) { pk = Math.max(pk, Math.abs(d[i])); ss += d[i] * d[i]; }
+    r[k] = { ms: Math.round(performance.now() - t0), dur: +b.duration.toFixed(2), len: +len.toFixed(2), once: !!S.once, rms: Math.sqrt(ss / d.length) }; }
+  return r; });
+const scBad = Object.entries(sc).filter(([, r]) => r.rms < 0.02 || (r.once ? r.dur < r.len : Math.abs(r.dur - r.len) > 0.01));
+ok('score: every track bakes, sounds, loops at its bar length', scBad.length === 0, Object.entries(sc).map(([k, r]) => `${k} ${r.dur}s ${r.ms}ms`).join(' · ') + (scBad.length ? ' BAD ' + scBad.map(([k]) => k).join(' ') : ''));
+ok('each map / scene plays its own track', Object.entries(tracks).every(([k, v]) => v === k || v === 'boss'), Object.entries(tracks).map(([k, v]) => `${k}→${v}`).join(' '));
 // generated files
 const idx = await P.evaluate(() => window.__wcfAudio.kc.files.index);
 const nFiles = Object.keys(idx.music).length + Object.keys(idx.vo).length + Object.values(idx.shout).reduce((a, s) => a + s.light.length + s.heavy.length, 0);
@@ -48,8 +58,6 @@ if (nFiles) {
   const dec = await P.evaluate(async () => { const F = window.__wcfAudio.kc.files, I = F.index, all = [...Object.values(I.music), ...Object.values(I.vo), ...Object.values(I.shout).flatMap((s) => [...s.light, ...s.heavy])];
     const b = await Promise.all(all.map((f) => F.load(f))); return { n: all.length, bad: all.filter((f, i) => !b[i]) }; });
   ok('generated files decode', dec.bad.length === 0, `${dec.n - dec.bad.length}/${dec.n}${dec.bad.length ? ' bad: ' + dec.bad.slice(0, 4).join(' ') : ''}`);
-  const want = Object.keys(tracks).filter((k) => idx.music[k]);
-  ok('each map / scene plays its own track', want.every((k) => tracks[k] === k || (tracks[k] === 'boss' && idx.music.boss)), want.map((k) => `${k}→${tracks[k]}`).join(' '));
   const vo = await P.evaluate(() => window.__wcfAudio.kc.stats.vo);
   if (Object.keys(idx.vo).length) ok('voiced lines play', vo > 0, `${vo} lines voiced`);
 } else console.log('     (no generated audio files yet: synth only)');

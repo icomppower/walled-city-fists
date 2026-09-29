@@ -31,8 +31,11 @@ Walled City is a real place; every character, gang and event here is fictional.
 - **Modes** — 故事 Campaign (chapters unlock in order, prologue scroll → battle → epilogue → between-chapter scene →
   next chapter; 繼續 / 新遊戲) · 自由 Free mode (any fighter × map × difficulty × enemy count × boss, endless waves) ·
   影院 Cinema (every scroll and scene).
-- Written Cantonese + English throughout; procedural sound (an original pentatonic kung fu theme, the market's
-  clatter and mahjong tiles, dripping pipes, rain on tin, jets roaring low with their Doppler). Plays on phones:
+- Written Cantonese + English throughout; an original synthesised score, one track per scene (a title theme, the
+  scrolls' guqin and xiao, 70s street-fight funk in the alleys, a dizi run over the roofs, clanking factories, the
+  tower's suona and taiko, boss music, the three scenes, the end), plus procedural sound (the market's clatter and
+  mahjong tiles, dripping pipes, rain on tin, jets roaring low with their Doppler). Any track or voice line can be
+  replaced by a file made in Google AI Studio: `bench/audio/ingest.mjs`. Plays on phones:
   floating stick, 攻 蓄 跳 閃 無雙 buttons, a lighter mobile quality tier.
 
 <p align="center"><img src="media/kc-touch.jpg" alt="Touch controls on a phone" width="60%"></p>

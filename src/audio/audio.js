@@ -196,6 +196,7 @@ export function createAudio(game) {
     // bed follows combat intensity (hits per ~2 s)
     intensity *= Math.exp(-dt / 2);
     const b = 1 - Math.exp(-intensity / 60), t = ctx.currentTime;   // ≈0.35 for a light skirmish, ≈0.8 in a packed melee
+    if (kc) kc.intensity = b;                   // the 城寨 score rides the fight too
     if (bedG) {
       bedG.gain.setTargetAtTime(BED[0] + BED[1] * b, t, 0.3); drumG.gain.setTargetAtTime(DRUMS[0] + DRUMS[1] * b, t, 0.6);
       musicG.gain.setTargetAtTime(MUSIC[0] + MUSIC[1] * b, t, 0.8);

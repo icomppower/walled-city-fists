@@ -4,9 +4,9 @@
 // in the 蛇王's P3), the jets' fly-over roar with its Doppler (rate 1.12 → 0.9 as it passes, panned across), and the
 // cutscenes: the base loops duck out, the pad and the scene's bed come in, the jet on its cue, the end-title chord under
 // the card. A skipped (or left) cutscene / scroll fades its sound in 0.5 s. Audio randomness: Math.random (never the sim
-// or visual RNG). Generated files (./kcassets.js, made in AI Studio) take over where they exist: a music track per scene
-// (title, scroll, each map, boss, each cutscene, win / lose) replaces the synth theme + drums (or the cutscene pad),
-// looping with a crossfade; a voice file per dialogue line plays with the line (battle story:say, cutscene subtitles,
+// or visual RNG). Music: a track per scene (title, scroll, each map, boss, each cutscene, win / lose) — the synth score
+// (./kcscore.js, baked on first need, looping natively) or, where one exists, a generated file (./kcassets.js, made in
+// AI Studio; looping with a crossfade). It replaces the base theme + drums and the cutscene pad; a voice file per dialogue line plays with the line (battle story:say, cutscene subtitles,
 // the Musou line) and dips the music; the playables' shouts replace the synth kiai. A = { ctx, out (→ the master mix),
 // revIn, bedScale (the base loops' level), procMus (the synth theme + drums), vox (voice bus), B (base bank), game }.
 import { on } from '../core/events.js';
@@ -14,12 +14,13 @@ import { MAP } from '../world/map.js';
 import { buildKcBank } from './kcbank.js';
 import { CUTSCENES } from '../story/cutscenes/data.js';
 import { createAssets } from './kcassets.js';
+import { SONGS, bakeSong } from './kcscore.js';
 
 const FADE = 0.5;
 const XF = 2.5, SWAP = 1.2;                                     // s: a looping track's restart crossfade; a track change
 const ONCE = new Set(['win', 'lose', 'end']);                   // tracks that play through once
 const HEAVY = new Set(['seiya', 'haa', 'uora']);                // base kiai keys voiced by the heavy shouts
-const MUS = { battle: 0.5, other: 0.7 }, DUCK = 0.45;           // generated music level; × DUCK under a voice line                                               // s: a skip fades the scene's sound out over this
+const MUS = { battle: [0.36, 0.3], other: 0.6 }, DUCK = 0.45;  // music level (battle: + × combat intensity); × DUCK under a voice                                               // s: a skip fades the scene's sound out over this
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const band = (v, a, b, e = 6) => clamp(Math.min(v - a, b - v) / e + 0.5, 0, 1);   // 1 inside [a, b], easing out over e m
 
@@ -60,7 +61,7 @@ export function createKcLayer(A) {
     slot = name;
     if (track) stopTrack(track, SWAP);
     track = null;
-    const p = name && files.music(name);
+    const file = files.hasMusic(name), p = file ? files.music(name) : synth(name);
     if (!p) return;
     const tr = track = { g: ctx.createGain(), srcs: new Set(), dead: false, timer: 0 };
     tr.g.gain.value = 0; tr.g.connect(mus);
@@ -70,6 +71,7 @@ export function createKcLayer(A) {
       tr.g.gain.setValueAtTime(0, t0); tr.g.gain.linearRampToValueAtTime(1, t0 + SWAP);
       const take = (at) => {
         const s = ctx.createBufferSource(), g = ctx.createGain(); s.buffer = buf; s.connect(g).connect(tr.g);
+        if (!file && !once) { s.loop = true; tr.srcs.add(s); s.start(at); return; }   // synth loops are baked seamless
         if (at > t0) { g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(1, at + x); }
         if (!once) { g.gain.setValueAtTime(1, at + buf.duration - x); g.gain.linearRampToValueAtTime(0, at + buf.duration); }
         s.onended = () => tr.srcs.delete(s); tr.srcs.add(s); s.start(at);
@@ -79,7 +81,16 @@ export function createKcLayer(A) {
       take(t0);
     });
   }
-  const live = () => !!track;                                   // a generated track is (about to be) playing
+  const live = () => !!track;
+  const baked = new Map();                                      // slot → Promise<AudioBuffer | null> (the synth score)
+  function synth(slot) {
+    if (!slot || !SONGS[slot]) return null;
+    if (!baked.has(slot)) baked.set(slot, bakeSong(slot).catch((e) => { console.warn('score', slot, e); return null; }));
+    return baked.get(slot);
+  }
+  const prebake = (...slots) => { for (const s of slots) if (!files.hasMusic(s)) synth(s); };
+  files.ready.then(() => prebake('title', 'scroll'));
+  on('scenario', () => setTimeout(() => prebake(MAP.id, 'boss', 'win', 'lose'), 0));                                   // a generated track is (about to be) playing
 
   const voBus = ctx.createGain(); voBus.connect(A.vox || A.out);
   let voSrc = null; const stats = { vo: 0 };                   // stats: bench/harness/audio-check.mjs
@@ -142,7 +153,7 @@ export function createKcLayer(A) {
     if (F.jet) timers.push(setTimeout(() => jet(0, 1, 1, cut), Math.max(0, ((F.jet.t0 + F.jet.t1) / 2 - 3.4) * 1000)));
     let at = 0;                                                  // voiced subtitles, on the scene clock
     for (const sh of (S && S.shots) || []) { for (const q of sh.sub || []) timers.push(setTimeout(() => speak(q.zh, cut), (at + q.at) * 1000)); at += sh.dur; }
-    if (F.card && K.endChord && !files.hasMusic(e.id)) timers.push(setTimeout(() => {
+    if (F.card && K.endChord && !SONGS[e.id] && !files.hasMusic(e.id)) timers.push(setTimeout(() => {
       const s = ctx.createBufferSource(); s.buffer = K.endChord; const g = ctx.createGain(); g.gain.value = 0.8; s.connect(g).connect(cut); s.start();
     }, Math.max(0, F.card.at - 0.4) * 1000));
   });
@@ -170,12 +181,12 @@ export function createKcLayer(A) {
     else if (map === 'tower') { L.city = 0.4; L.rain = fx.rain ? 0.65 : 0; }
     // generated music: the scene's slot (a boss on the field: 'boss' if there is one); the synth theme / pad stand down
     if (filesOk) {
-      const want = state === 'battle' ? (bossOn() && files.hasMusic('boss') ? 'boss' : map)
+      const want = state === 'battle' ? (bossOn() ? 'boss' : map)
         : state === 'cutscene' ? scene : state === 'prologue' || state === 'ending' ? 'scroll'
         : state === 'result' ? (win ? 'win' : 'lose') : state === 'title' || state === 'select' || state === 'loading' ? 'title' : slot;
       playTrack(want);
       if (live()) L.pad = 0;
-      mus.gain.setTargetAtTime(state === 'battle' ? MUS.battle : MUS.other, t, 0.3);
+      mus.gain.setTargetAtTime(state === 'battle' ? MUS.battle[0] + MUS.battle[1] * (layer.intensity || 0) : MUS.other, t, 0.3);
     }
     A.procMus.gain.setTargetAtTime(live() && state === 'battle' ? 0 : 1, t, 0.5);
     for (const k in L) if (loops[k]) loops[k].gain.setTargetAtTime(L[k], t, 0.6);
@@ -184,5 +195,6 @@ export function createKcLayer(A) {
     if (state === 'battle' && fx.jet && fx.jet !== lastJet) { lastJet = fx.jet; jet(0, 0.9, Math.sign(Math.sin(fx.jet.yaw || 1)) || 1); }
   }
   requestAnimationFrame(frame);
-  return { K, cut, amb, files, stats, track: () => slot, live };
+  const layer = { K, cut, amb, files, stats, intensity: 0, track: () => slot, live };
+  return layer;
 }
