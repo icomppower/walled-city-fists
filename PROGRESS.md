@@ -9,7 +9,7 @@ not `done`.
 | 0 Vercel | done | project `walled-city-fists` (sharkgundams-projects), git-connected to icomppower/walled-city-fists: production = main, previews per branch; first git deploy (`23754d4`) READY in 5 s; https://walled-city-fists.vercel.app 200, title screen, 0 console errors (remote smoke) |
 | 1 阿鐵 tit | done | gates 6/6 (moves 15/15, onsets = frame table: n1 11 · n2 13 · n3 12 · c1 20; N-string live gaps 25 25 26 25 27 sf; pole ≥ 0.23 m above ground; feet slide ≤ 0.95 cm; Musou 39/40 of a packed ring); Musou at 600 enemies p95 16.8 ms (= Zhao Yun 16.8, 60 fps); model critic 2 rounds → P1 0 (r1: brows 1 voxel tall — the face box stopped under the top brow row; mouth too red → P2 fixed); bot WIN ch1 (?dev) × steady 5:55 / rush 6:56 / back 7:13, rank S; title tag 阿鐵, 0 errors |
 | 2 阿翠 chui | done | gates 6/6 (moves 15/15, onsets = frame table: n1 7 · n2 7 · n3 11 · c1 12/22/32/41; N-string live gaps 17 18 18 18 18 sf; dash cancels on N3 (f15) / N5 (f11); blades ≥ 0.41 m above ground; feet ≤ 0.69 cm; Musou 39/40); C3 chain punches 10 hits; Musou at 600 enemies p95 16.7 ms (= Zhao Yun); model critic 2 rounds → P1 0 (r1: the mandarin collar read as a gold box frame; the jacket back read as stripes → subtle folds; P2 thimble hidden → bigger, silver); bot WIN ch1 (?dev) × steady 7:48 / rush 7:51 / back 6:48, rank S; title tags 阿鐵 · 阿翠 |
-| 3 Enemy side | pending | |
+| 3 Enemy side | done | skins serpent / khaki / resident / kids, officers chain / blade, bosses ox / swallow / goldtooth / serpent (src/chars/officers/kc/); boss gate 4/4 as tit and 4/4 as chui — phase HP on its first frame (tit / chui): ox 59.77 / 59.77 · 24.80 / 24.85 %, swallow 49.80 / 49.80 · 24.72 / 24.80 %, goldtooth 49.80 / 49.80 · 24.80 / 24.86 %, serpent 74.80 / 74.91 · 49.80 / 49.80 · 24.67 / 24.97 %; banners on the phase frame; behaviours: ox charges + ≥ 3 slams, swallow knives + roof-to-roof leaps + knife rain, goldtooth revolver bursts + 2 khaki squads + power cut, serpent N1 / N2 / C1 + 2 elites + rain / neon + P4 leap slams; KO → win, kneels, weapon on the ground (guandao snapped); lineup critic 3 rounds → P1 0 (r1: 蛇王 / 飛燕 had no eyes — face paint missed the 0.026 m voxel centres; r2: the KO'd raised hand held the revolver / knife fan → holster + bandolier); content: no badges, insignia, real gang names or text |
 | 4 kc1 alleys | pending | |
 | 5 kc2 rooftops | pending | |
 | 6 kc3 factories | pending | |
@@ -20,7 +20,7 @@ not `done`.
 | 10 Critic rounds | pending | |
 | 11 Ship | pending | |
 
-**Next action:** stage 3 enemy side.
+**Next action:** stage 4 kc1 alleys.
 
 **Live:** https://walled-city-fists.vercel.app
 
@@ -55,3 +55,13 @@ not `done`.
   notes).
 - The turntable bench doesn't advance the root by the move's lunge, so baked feet look stretched in lunging poses there
   (bench artifact; the in-game gate measures feet with the lunge).
+- Crowd skins apply on battle start only (frozen crowd view), so a chapter fields one foe skin: kc3 uses `khaki`
+  throughout, the gang present as `chain` / `blade` officers. The view has no per-skin scale: the `kids` skin is
+  registered (full-size unarmed look) and the kc2 escort draws its kids at 0.7× as story fx figures (skins.js kidFigure).
+- The frozen grunt body is the lamellar cut; skins flatten plate / lace / hi to the cloth colour, but its fixed 0.86 checker
+  still shows faintly on light cloth (serpent white vests, khaki) — P2.
+- 蛇王's guandao moves (frame table N1 / N2 / C1) are scripted swings in bosses.js (the crowd AI is frozen); damage tuned
+  down (12 / 10 / 16) after the bot as 阿鐵 died before P4 with the table's feel at 18 / 16 / 24. Phase-entry moves (飛燕's
+  first leap, 蛇王's enraged leap slam) have super armour: 阿翠's chain punches otherwise kept them staggered through the
+  whole short phase.
+- Swing / Knife / shot damage all go through hero.hurt (dodge, i-frames and the Musou protect).

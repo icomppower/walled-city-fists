@@ -8,7 +8,8 @@ g() { out=$("$@" 2>&1); rc=$?; if [ $rc -ne 0 ]; then echo "$out" | tail -5; ech
 echo "== ch1 hash gate (Node)";      g $N bench/harness/check.mjs
 echo "== rig / dual-wield probes";   g $N bench/harness/rigprobe.mjs; g $N bench/harness/dualprobe.mjs
 echo "== ch1 bot (?dev chapter)";    g $N bench/bot/run.mjs --char zhaoyun --quiet
-echo "== character gates";          g $N bench/chars/gates.mjs tit; g $N bench/chars/gates.mjs chui
+echo "== character + boss gates";   g $N bench/chars/gates.mjs tit; g $N bench/chars/gates.mjs chui
+g $N bench/chars/boss.mjs tit; g $N bench/chars/boss.mjs chui
 for c in tit chui; do for st in steady rush back; do g $N bench/bot/run.mjs --char $c --style $st --quiet; done; done
 [ "$1" = "--quick" ] && { echo "QUICK GATES GREEN"; exit 0; }
 echo "== Chrome: boot, title, scrolls"; g node bench/harness/smoke.mjs "?x" 4; g node bench/harness/title-check.mjs bench/out
