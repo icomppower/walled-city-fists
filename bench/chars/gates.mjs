@@ -16,6 +16,7 @@ import { ST } from '../../src/crowd/crowd.js';
 import { on } from '../../src/core/events.js';
 
 const TARGETS = {
+  chui: { onsets: { n1: [7], n2: [7], n3: [11], c1: [12, 22, 32, 41] }, band: [16, 20], points: [[0, 0, -0.13], [0, 0, 0.5], [0, -0.07, -0.12]], dual: true },
   tit: { onsets: { n1: [11], n2: [13], n3: [12], c1: [20] }, band: [24, 28], points: [[0, 0, -0.5], [0, 0, 1.5]] },
   siumei: { onsets: { n1: [8], n2: [8], n3: [12], c1: [14, 24, 34, 43] }, band: [16, 20], points: [[0, 0, -0.15], [0, 0, 0.88]], dual: true },
   lungjai: { onsets: { n1: [11], n2: [12], n3: [12], c1: [22] }, band: [22, 26], points: [[0, 0, -0.6], [0, 0, 1.5]] },

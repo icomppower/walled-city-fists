@@ -8,7 +8,7 @@ not `done`.
 | 0 Fork + strip | done | copy of hk-freedom-voxel `3797d28`; HK chars / chapters / maps / skins / story deleted (−54 files); Node 6/6 logs identical (finals 90a1a382 64989ea8 6c41979e 2c32ffdc 6a95e25b b7fe682c = base); rig 54/54, dual PASS; bot WIN ch1 zhaoyun 普通 (4:41, S); Chrome: title 城寨 拳王 / WALLED CITY FISTS, menu 操作說明 only (故事 / 自由 with ?dev), no base-game text, 0 errors; ch1 scroll 6/6, crowd 94/94, checkpoints 6/6 × 2; touch twin 7/7, touch UI 13/13 |
 | 0 Vercel | done | project `walled-city-fists` (sharkgundams-projects), git-connected to icomppower/walled-city-fists: production = main, previews per branch; first git deploy (`23754d4`) READY in 5 s; https://walled-city-fists.vercel.app 200, title screen, 0 console errors (remote smoke) |
 | 1 阿鐵 tit | done | gates 6/6 (moves 15/15, onsets = frame table: n1 11 · n2 13 · n3 12 · c1 20; N-string live gaps 25 25 26 25 27 sf; pole ≥ 0.23 m above ground; feet slide ≤ 0.95 cm; Musou 39/40 of a packed ring); Musou at 600 enemies p95 16.8 ms (= Zhao Yun 16.8, 60 fps); model critic 2 rounds → P1 0 (r1: brows 1 voxel tall — the face box stopped under the top brow row; mouth too red → P2 fixed); bot WIN ch1 (?dev) × steady 5:55 / rush 6:56 / back 7:13, rank S; title tag 阿鐵, 0 errors |
-| 2 阿翠 chui | pending | |
+| 2 阿翠 chui | done | gates 6/6 (moves 15/15, onsets = frame table: n1 7 · n2 7 · n3 11 · c1 12/22/32/41; N-string live gaps 17 18 18 18 18 sf; dash cancels on N3 (f15) / N5 (f11); blades ≥ 0.41 m above ground; feet ≤ 0.69 cm; Musou 39/40); C3 chain punches 10 hits; Musou at 600 enemies p95 16.7 ms (= Zhao Yun); model critic 2 rounds → P1 0 (r1: the mandarin collar read as a gold box frame; the jacket back read as stripes → subtle folds; P2 thimble hidden → bigger, silver); bot WIN ch1 (?dev) × steady 7:48 / rush 7:51 / back 6:48, rank S; title tags 阿鐵 · 阿翠 |
 | 3 Enemy side | pending | |
 | 4 kc1 alleys | pending | |
 | 5 kc2 rooftops | pending | |
@@ -20,7 +20,7 @@ not `done`.
 | 10 Critic rounds | pending | |
 | 11 Ship | pending | |
 
-**Next action:** stage 2 阿翠 chui.
+**Next action:** stage 3 enemy side.
 
 **Live:** https://walled-city-fists.vercel.app
 
