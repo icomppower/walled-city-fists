@@ -24,17 +24,32 @@ import { createNav, sfx, inkWipe, wiping, afterWipe, stamp, clearStamp, replay }
 import { ground } from '../world/map.js';
 import { dotTex, scatter, passPoint, standOfficer, poseOfficer } from './stage.js';
 import { DIFFS, LOCK, unlocked, difficulty, setDifficulty } from '../core/difficulty.js';
+import { CAMPAIGN, cleared, firstUncleared, resetCampaign } from '../story/campaign.js';
+import { FREE_MAPS, MAP_BOSS, BOSSES, freeChapter } from '../story/free.js';
+import { CUTSCENES } from '../story/cutscenes/data.js';
 
 // brush swash drawn under the focused item (revealed left → right) — one tapered stroke, dry tail
 export const SWASH = `<svg class="swash" viewBox="0 0 400 26" preserveAspectRatio="none" aria-hidden="true"><path d="M3 15C40 7 118 4 214 8
   S352 11 397 5L395 9C368 15 330 17 280 18C226 19 170 17 128 19C84 21 38 22 3 15ZM300 20C330 19 360 17 384 14L382 16C356 20 326 22 300 20Z"/></svg>`;
 
-// 故事模式 / 自由演武 need a playable officer on the roster
+// 故事 / 自由 need a playable on the roster. 故事 Campaign: 繼續 / 新遊戲 → difficulty → select (the chapter fixed) · 自由
+// Free mode: playable × map × difficulty × enemy count × boss, 出陣 → the arena (a page reload with the deep link when the
+// enemy count differs from the running page's: the crowd is sized at boot) · 影院 Cinema: every scroll and scene.
 const ITEMS = [
-  { go: 'story', zh: '故事模式', en: 'Story · choose your chapter' },
-  { go: 'free', zh: '自由演武', en: 'Free battle · endless waves' },
+  { go: 'story', zh: '故事', en: 'Campaign · kc1 → kc4' },
+  { go: 'free', zh: '自由', en: 'Free mode · any map, any boss' },
+  { go: 'gallery', zh: '影院', en: 'Cinema · scrolls and scenes' },
   { go: 'controls', zh: '操作說明', en: 'Controls' },
 ].filter((it) => it.go === 'controls' || CHAR_ORDER.length);
+const CH_NAME = { kc1: ['第一章 巷戰', 'I · The Alleys'], kc2: ['第二章 天台', 'II · The Rooftops'], kc3: ['第三章 工場', 'III · The Factories'], kc4: ['第四章 蛇王樓', 'IV · The Serpent Tower'] };
+const MAP_LABEL = { alleys: ['巷戰', 'The Alleys'], rooftops: ['天台', 'The Rooftops'], factories: ['工場', 'The Factories'], tower: ['蛇王樓', 'The Serpent Tower'] };
+const GALLERY = [
+  ...['kc1', 'kc2', 'kc3', 'kc4'].map((id) => ({ kind: 'scroll', id, zh: `序・${CH_NAME[id][0]}`, en: `Prologue · ${CH_NAME[id][1]}` })),
+  ...['between1', 'between2', 'between3'].map((id) => ({ kind: 'cut', id, zh: CUTSCENES[id].title.zh, en: CUTSCENES[id].title.en })),
+  { kind: 'ending', id: 'ending', zh: '尾聲・天光', en: 'The ending scroll' }, { kind: 'cut', id: 'end', zh: '終幕・城寨係大家嘅', en: 'The end scene' },
+];
+const P0 = new URLSearchParams(location.search);
+const RUN_ENEMIES = P0.get('enemies') ? Math.max(0, Math.min(2000, Number(P0.get('enemies')) | 0)) : !P0.has('hq') && matchMedia('(pointer: coarse)').matches ? 150 : 300;
 export const CONTROLS = [   // also the pause menu's table (main.js)
   ['移動', 'Move', '<kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / arrows', 'left stick'],
   ['攻擊', 'Attack', '<kbd>J</kbd> / left click — tap for the full combo', '<kbd>X</kbd> □'],
@@ -64,10 +79,10 @@ export const STAGE = {
   // across his eyes), the arrow aimed toward the lens-right, head turned to the lens (root-space look override), his head
   // at Zhao Yun's shoulder line with air between them. x/z in metres; narrow = [x, z] on ≤ 4:3 windows (nk in view()).
   // tag = [x, y] rem from the head to the tag's bottom centre. banner = the surname standard behind its officer (DoF).
-  // 城寨拳王 (reskin): 阿鐵 in front with the carrying pole raised (his Musou's call), 阿翠 behind and right with both
+  // 城寨拳王 (reskin): 阿鐵 in front in his crane stance (one leg up, a wing arm, the pole out), 阿翠 behind and right with both
   // butterfly swords; their seal standards (鐵 / 翠) behind them. Until their kits exist the 定軍山 pair stands in (no name tags).
   cast: [
-    { id: 'tit', clip: 'mu_tit', u: 24 / 210, x: 0.2, z: 0, face: Math.PI + 0.1, look: [0.7, 1.8], tag: [-4.5, 6, 'L'], banner: [-0.2, 7.5], glyph: '鐵' },
+    { id: 'tit', clip: 'c4', u: 10 / 66, x: 0.2, z: 0, face: Math.PI + 0.25, look: [0.7, 1.8], tag: [-4.5, 6, 'L'], banner: [-0.2, 7.5], glyph: '鐵' },   // 鶴立: the crane stance
     { id: 'chui', clip: 'n3', u: 14 / 28, x: -1.0, z: 0.7, face: Math.PI + 0.35, look: [1.0, 2.0], tag: [-1.5, -6],
       narrow: [-0.95, 0.5], banner: [-4.6, 10], glyph: '翠' },
   ],
@@ -103,6 +118,7 @@ export function createTitle(el, flow) {
       <div class="t-dpanel"><nav class="t-menu t-dif">${DIFFS.map((d, i) => `<button data-d="${i}" style="--i:${i}"><b>${d.zh}<i class="t-lk">鎖</i></b><small>${d.en}</small>${SWASH}</button>`).join('')}</nav>
         <div class="t-dcard"><h3>難度<small>Difficulty</small></h3><p class="t-dline"><b></b><small></small></p>
           <ul class="s-stats t-dbars">${[['敵勢', 'Pressure'], ['敵將', 'Officers'], ['傷害', 'Damage']].map(([zh, en]) => `<li><b>${zh}</b><small>${en}</small><span>${'<i></i>'.repeat(5)}</span></li>`).join('')}</ul></div></div>
+      <div class="t-spanel"><nav class="t-menu t-sub"></nav><div class="t-dcard t-scard"><h3></h3><p class="t-dline t-sline"><b></b><small></small></p><ul class="t-slist"></ul></div></div>
     </div>
     <section class="t-ctl"><h2>操作說明<small>Controls</small></h2>
       <table>${CONTROLS.map(([zh, en, kb, pad]) => `<tr><th>${zh}<small>${en}</small></th><td>${kb}</td><td class="pad">${pad}</td></tr>`).join('')}</table>
@@ -111,6 +127,8 @@ export function createTitle(el, flow) {
   const $ = (s) => el.querySelector(s), btns = [...el.querySelectorAll('.t-main button')], dbtns = [...el.querySelectorAll('.t-dif button')];
   const tags = [...el.querySelectorAll('.t-tag')];
   let cur = 0, pre = true, ctl = false, busy = false, dcur = 1, dmode = null;   // dmode: the mode picked, while the difficulty panel is up
+  let subK = null, scur = 0, dctx = {};                               // the open sub-panel (story / free / gallery), its focus; the campaign pick
+  const FREE = { char: 0, map: 0, diff: 1, enemies: [150, 300, 600].indexOf(RUN_ENEMIES) >= 0 ? [150, 300, 600].indexOf(RUN_ENEMIES) : 1, boss: 0 };
 
   const focus = (i, quiet) => {
     i = (i + btns.length) % btns.length;
@@ -121,7 +139,7 @@ export function createTitle(el, flow) {
   const foot = () => {
     $('.ui-foot').innerHTML = ctl ? `<span><kbd>Esc</kbd><kbd class="pad">B</kbd>返回<small>Back</small></span>`
       : `<span><kbd>↑</kbd><kbd>↓</kbd>選擇${dmode ? '難度' : ''}<small>Select</small></span><span><kbd>Enter</kbd><kbd class="pad">A</kbd>決定<small>Confirm</small></span>`
-        + (dmode ? `<span><kbd>Esc</kbd><kbd class="pad">B</kbd>返回<small>Back</small></span>` : '');
+        + (dmode || subK ? `<span><kbd>Esc</kbd><kbd class="pad">B</kbd>返回<small>Back</small></span>` : '');
   };
   const setCtl = (v) => { ctl = v; el.classList.toggle('ctl', v); foot(); };
   // difficulty panel: the card shows the focused tier (a locked 修羅: its unlock rule instead of the line)
@@ -153,10 +171,12 @@ export function createTitle(el, flow) {
       if (!unlocked(d)) return sfx('back');
       setDifficulty(d); busy = true;
       stamp(dbtns[dcur], '決');
-      return setTimeout(() => inkWipe(() => flow.go('select', { mode })), 380);
+      return setTimeout(() => inkWipe(() => flow.go('select', { mode, ...dctx })), 380);
     }
+    if (subK) return subOk();
     const it = ITEMS[cur];
     if (it.go === 'controls') { sfx('ok'); return setCtl(true); }
+    if (it.go === 'story' || it.go === 'free' || it.go === 'gallery') { sfx('ok'); return openSub(it.go); }
     sfx('ok'); setDif(it.go);
   };
   const back = () => {
@@ -164,21 +184,101 @@ export function createTitle(el, flow) {
     if (wiping()) return afterWipe(back);
     if (pre) return wake();
     if (ctl) { sfx('back'); setCtl(false); }
-    else if (dmode) { sfx('back'); setDif(null); measure(); }
+    else if (dmode) { sfx('back'); setDif(null); if (dctx.campaign) openSub('story'); measure(); }
+    else if (subK) { sfx('back'); openSub(null); }
   };
   // "press any key": any key wakes the menu and is swallowed (capture, before the menu driver would act on it too)
   let active = false;
   addEventListener('keydown', (e) => { if (active && pre && !e.metaKey && !e.ctrlKey) { e.stopImmediatePropagation(); e.preventDefault(); wake(); } }, true);
-  const nav = createNav({ move: (d) => { if (pre) wake(); else if (!ctl && !busy) dmode ? dfocus(dcur + d) : focus(cur + d); }, ok, back });
+  const nav = createNav({ move: (d) => { if (pre) wake(); else if (!ctl && !busy) dmode ? dfocus(dcur + d) : subK ? subFocus(scur + d) : focus(cur + d); }, ok, back });
+
+  // ---- sub-panels: 故事 (繼續 / 新遊戲), 自由 (five cyclers + 出陣), 影院 (nine scenes)
+  function subRows() {
+    if (subK === 'story') {
+      const next = firstUncleared(), done = cleared();
+      return [...(done.length && next ? [{ act: 'continue', zh: '繼續', en: `Continue · ${CH_NAME[next][1]}` }] : []), { act: 'new', zh: '新遊戲', en: 'New game · from Chapter I' }];
+    }
+    if (subK === 'free') {
+      const ch = CHARS[CHAR_ORDER.filter((id) => !CHARS[id].dev)[FREE.char] || CHAR_ORDER[0]], m = FREE_MAPS[FREE.map], d = DIFFS[FREE.diff], bo = FREE.boss ? MAP_BOSS[m] : null;
+      return [{ act: 'char', zh: `角色・${ch.name.zh}`, en: ch.name.en }, { act: 'map', zh: `地圖・${MAP_LABEL[m][0]}`, en: MAP_LABEL[m][1] },
+        { act: 'diff', zh: `難度・${d.zh}`, en: d.en + (unlocked(d) ? '' : ' · locked') }, { act: 'enemies', zh: `敵數・${[150, 300, 600][FREE.enemies]}`, en: 'Enemy count' },
+        { act: 'boss', zh: `頭目・${bo ? BOSSES[bo].name.zh : '無'}`, en: bo ? BOSSES[bo].name.en : 'No boss' }, { act: 'go', zh: '出陣', en: 'Deploy' }];
+    }
+    return GALLERY.map((g) => ({ act: g.id, zh: g.zh, en: g.en }));
+  }
+  function renderSub() {
+    const rows = subRows(), nav_ = $('.t-sub');
+    nav_.innerHTML = rows.map((r, i) => `<button data-s="${i}" style="--i:${i}"><b>${r.zh}</b><small>${r.en}</small>${SWASH}</button>`).join('');
+    scur = Math.min(scur, rows.length - 1); subFocus(scur, true);
+    const h = $('.t-scard h3'), line = $('.t-sline'), list = $('.t-slist');
+    if (subK === 'story') {
+      const done = cleared();
+      h.innerHTML = '故事<small>Campaign</small>'; line.querySelector('b').textContent = '四章，一層一層上。'; line.querySelector('small').textContent = 'Four chapters, floor by floor, up to the Serpent King.';
+      list.innerHTML = CAMPAIGN.map((id, k) => `<li class="${done.includes(id) ? 'done' : k === 0 || done.includes(CAMPAIGN[k - 1]) ? 'open' : 'lock'}"><b>${CH_NAME[id][0]}</b><small>${done.includes(id) ? '✓' : k === 0 || done.includes(CAMPAIGN[k - 1]) ? '' : '鎖'}</small></li>`).join('');
+    } else if (subK === 'free') {
+      h.innerHTML = '自由<small>Free mode</small>'; line.querySelector('b').textContent = '無盡增援，隨意揀。'; line.querySelector('small').textContent = 'Endless waves on any map. Enter / click cycles a row.';
+      list.innerHTML = '';
+    } else {
+      h.innerHTML = '影院<small>Cinema</small>'; line.querySelector('b').textContent = '重溫每一卷、每一幕。'; line.querySelector('small').textContent = 'Every prologue scroll, scene and the ending.';
+      list.innerHTML = '';
+    }
+  }
+  function subFocus(i, quiet) {
+    const bs = [...el.querySelectorAll('.t-sub button')];
+    if (!bs.length) return;
+    scur = (i + bs.length) % bs.length;
+    bs.forEach((b, k) => b.classList.toggle('on', k === scur));
+    if (!quiet) sfx('move');
+  }
+  function openSub(k) {
+    subK = k; el.classList.toggle('sub', !!k); el.classList.toggle('gal', k === 'gallery'); scur = 0; foot();
+    if (k) { renderSub(); replay($('.t-spanel'), 'in'); }
+    measure();
+  }
+  function subOk() {
+    const row = subRows()[scur];
+    if (!row) return;
+    if (subK === 'story') {
+      if (row.act === 'new') resetCampaign();
+      dctx = { campaign: true, chapter: firstUncleared() || 'kc1' };
+      sfx('ok'); openSub(null); return setDif('story');
+    }
+    if (subK === 'free') {
+      const roster = CHAR_ORDER.filter((id) => !CHARS[id].dev);
+      if (row.act === 'char') FREE.char = (FREE.char + 1) % roster.length;
+      else if (row.act === 'map') FREE.map = (FREE.map + 1) % FREE_MAPS.length;
+      else if (row.act === 'diff') FREE.diff = (FREE.diff + 1) % DIFFS.length;
+      else if (row.act === 'enemies') FREE.enemies = (FREE.enemies + 1) % 3;
+      else if (row.act === 'boss') FREE.boss = 1 - FREE.boss;
+      else if (row.act === 'go') {
+        const d = DIFFS[FREE.diff];
+        if (!unlocked(d)) return sfx('back');
+        const char = roster[FREE.char] || roster[0], map = FREE_MAPS[FREE.map], boss = FREE.boss ? MAP_BOSS[map] : null, n = [150, 300, 600][FREE.enemies];
+        setDifficulty(d); busy = true; sfx('ok'); stamp(el.querySelectorAll('.t-sub button')[scur], '陣');
+        if (n !== RUN_ENEMIES) {                                       // the crowd is sized at boot: reload into the arena
+          const q = new URLSearchParams({ go: 'free', char, map, enemies: String(n), diff: d.id }); if (boss) q.set('boss', boss);
+          return setTimeout(() => inkWipe(() => { location.search = '?' + q; }), 380);
+        }
+        return setTimeout(() => inkWipe(() => flow.go('loading', { mode: 'story', char, chapter: freeChapter(map, boss).id, free: true })), 380);
+      }
+      sfx('move'); return renderSub();
+    }
+    // 影院
+    const g = GALLERY.find((q) => q.id === row.act), back_ = { state: 'title', ctx: { panel: 'gallery' } };
+    sfx('ok'); busy = true;
+    if (g.kind === 'scroll') return inkWipe(() => flow.go('prologue', { mode: 'story', char: 'tit', chapter: g.id, gallery: true }));
+    if (g.kind === 'ending') return inkWipe(() => flow.go('ending', { mode: 'story', char: 'chui', chapter: 'kc4', gallery: true }));
+    return inkWipe(() => flow.go('cutscene', { id: g.id, then: back_ }));
+  }
 
   el.addEventListener('pointerover', (e) => {
     const b = e.target.closest('.t-menu button');
-    if (b && !pre && !ctl && !busy) b.dataset.d ? dfocus(+b.dataset.d) : focus(+b.dataset.i);
+    if (b && !pre && !ctl && !busy) b.dataset.d ? dfocus(+b.dataset.d) : b.dataset.s ? subFocus(+b.dataset.s, true) : focus(+b.dataset.i);
   });
   el.addEventListener('click', (e) => {
     if (pre) return wake();
     const b = e.target.closest('.t-menu button');
-    if (b) { if (ctl) back(); else { b.dataset.d ? dfocus(+b.dataset.d, true) : focus(+b.dataset.i, true); ok(); } }
+    if (b) { if (ctl) back(); else { b.dataset.d ? dfocus(+b.dataset.d, true) : b.dataset.s ? subFocus(+b.dataset.s, true) : focus(+b.dataset.i, true); ok(); } }
     else if (ctl && !e.target.closest('.t-ctl')) back();
   });
   // mouse parallax target (-1..1), eased in view()
@@ -382,8 +482,9 @@ export function createTitle(el, flow) {
 
   return {
     view,
-    enter() {
-      busy = false; clearStamp(el); dmode = null; el.classList.remove('dif'); setCtl(false);
+    enter(c = {}) {
+      busy = false; clearStamp(el); dmode = null; dctx = {}; el.classList.remove('dif'); setCtl(false);
+      if (c.panel) { pre = false; openSub(c.panel); } else { subK = null; el.classList.remove('sub'); }
       el.classList.toggle('pre', pre);
       focus(cur, true); btns[cur].classList.add('on');
       replay(el, 'in');                                                     // logo ink-in

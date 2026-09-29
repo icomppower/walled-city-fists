@@ -401,6 +401,24 @@
      swash focus, a size down) and beside them a card with the focused tier's line and 敵勢 / 敵將 / 傷害 pips (select's
      .s-stats bars). A locked 修羅: dimmed with a 鎖 tag, the card shows its unlock rule. */
   #title:not(.dif) .t-dpanel, #title.dif .t-main { display: none; }
+  /* 城寨拳王 sub-panels (故事 / 自由 / 影院): the main menu gives way to the panel's list + its card */
+  #title:not(.sub) .t-spanel, #title.sub .t-main { display: none; }
+  .t-spanel { display: flex; align-items: flex-start; gap: 3rem; margin-top: 3rem; }
+  .t-spanel .t-menu { margin-top: 0; min-width: 24rem; }
+  #title .t-sub button { padding: .3rem 0 .55rem 4rem; }
+  #title .t-sub b { font-size: 2.7rem; }
+  #title.gal .t-sub { display: grid; grid-template-columns: repeat(2, minmax(22rem, auto)); column-gap: 1.5rem; }   /* 影院: nine scenes in two columns */
+  #title.gal .t-sub b { font-size: 2.3rem; } #title.gal .t-scard { display: none; }
+  .t-sub button::before { top: 1.4rem; }
+  .t-sub .swash { bottom: 1.8rem; width: 22rem; }
+  .t-sub .ui-stamp { left: 14rem; top: -.4rem; }
+  .t-scard { width: 29rem; }
+  .t-slist { list-style: none; margin: 1.2rem 0 0; padding: 0; display: grid; gap: .5rem; }
+  .t-slist li { display: flex; justify-content: space-between; font: 700 1.9rem/1.2 var(--kai); color: #efe3cf; }
+  .t-slist li small { font: 700 1.6rem/1.2 var(--brush); color: #f2c14e; }
+  .t-slist li.lock { opacity: .45; } .t-slist li.lock small { color: #e58a70; }
+  @media (max-height: 500px) { #title .t-sub button { padding: 3px 0 5px 3.4rem; } #title .t-sub b { font-size: 15px; } #title .t-sub small { display: none; }
+    .t-scard { display: none; } .t-spanel { margin-top: .6rem; } #title .t-sub button::before { top: 8px; } #title.gal .t-sub b { font-size: 13px; } }
   .t-dpanel { display: flex; align-items: flex-start; gap: 3rem; margin-top: 4rem; }
   .t-dpanel .t-menu { margin-top: 0; min-width: 20rem; }
   #title .t-dif button { padding: .5rem 0 .9rem 4rem; }

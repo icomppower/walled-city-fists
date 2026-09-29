@@ -9,7 +9,8 @@
 // Chapter pick (seam): 出陣 on an officer opens the chapter list beside the button — the chapters whose cast includes him
 // (story/chapters.js; free mode: the battlefield); ↑/↓ / click pick one, 出陣 / Enter / a second click deploy, Esc / 返回
 // back to the officers. The roster groups officers under their faction banner (char.faction, default 蜀).
-// ctx in: { mode }. Deploy → ink wipe → flow.go('loading', { mode, char, chapter }) (loading.js); back → title.
+// ctx in: { mode, campaign?, chapter? } (故事 campaign: the chapter is fixed, no list). Deploy → ink wipe →
+// flow.go('loading', { mode, char, chapter, campaign }) (loading.js); back → title.
 // 3D is render-only: view(scene, camera, focus, dt) runs after the gameplay camera rig while this screen is up.
 import * as THREE from 'three';
 import { CHARS, CHAR_ORDER, paintPortrait } from '../chars/index.js';
@@ -78,6 +79,7 @@ export function createSelect(el, flow) {
     chList.querySelectorAll('.s-ch').forEach((b, k) => b.classList.toggle('on', k === ci));
   }
   function openChapters() {
+    if (ctx.campaign) { chs = [ctx.chapter]; ci = 0; return deploy(); }   // 故事 campaign: the chapter is fixed
     chs = chaptersFor(CHAR_ORDER[cur]);
     if (chs.length < 1) return deploy();
     picking = true; chapEl.hidden = false; el.classList.add('chap');
@@ -127,7 +129,7 @@ export function createSelect(el, flow) {
     busy = true;
     stamp($('.s-act'), '出陣');
     const id = CHAR_ORDER[cur], chapter = chs[ci];
-    setTimeout(() => inkWipe(() => flow.go('loading', { mode: ctx.mode, char: id, chapter })), 520);
+    setTimeout(() => inkWipe(() => flow.go('loading', { mode: ctx.mode, char: id, chapter, campaign: !!ctx.campaign })), 520);
   }
   const back = () => {
     if (busy) return;

@@ -9,6 +9,7 @@
 // ctx in: { win, stats: { kos, time, hpMax, maxChain, dmg, rank? }, mode, char, chapter, diff (core/difficulty.js tier), unlock? }.
 import { CHARS, paintPortrait } from '../chars/index.js';
 import { resolveChapter } from './chapters.js';
+import { nextChapter } from './campaign.js';
 import { inkWipe, afterWipe, createNav } from '../ui/menu.js';
 
 const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
@@ -22,7 +23,10 @@ export function createResult(el, flow) {
     if (!b) return;
     if (b.dataset.act === 'retry') leave(() => flow.go('loading', { mode: ctx.mode, char: ctx.char, chapter: ctx.chapter, art: ctx.art, retry: true }));
     else if (b.dataset.act === 'ending') leave(() => flow.go('ending', { mode: ctx.mode, char: ctx.char, chapter: ctx.chapter }));
-    else if (b.dataset.act === 'after') leave(() => flow.go('cutscene', { id: resolveChapter(ctx.chapter, ctx.char).AFTER, then: ctx.then || 'title' }));
+    else if (b.dataset.act === 'after') {
+      const next = ctx.campaign && nextChapter(ctx.chapter);          // 故事: the scene, then straight on to the next chapter
+      leave(() => flow.go('cutscene', { id: resolveChapter(ctx.chapter, ctx.char).AFTER, then: next ? { state: 'loading', ctx: { mode: 'story', char: ctx.char, chapter: next, campaign: true } } : 'title' }));
+    }
     else leave(() => flow.go('title'));
   });
   const nav = createNav({

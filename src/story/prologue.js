@@ -97,6 +97,7 @@ export function createPrologue(el, flow, part = 'PROLOGUE') {
       return;
     }
     phase = 'out';
+    if (ctx.gallery) { clearTimeout(timer); inkWipe(() => flow.go('title', { panel: 'gallery' })); return; }   // 影院: back to the gallery
     if (ending) { clearTimeout(timer); inkWipe(() => (CH.END_SCENE ? flow.go('cutscene', { id: CH.END_SCENE, then: 'title' }) : flow.go('title'))); return; }
     el.classList.add('out');
     later(() => flow.go('battle', ctx), 0.55);          // index.html #prologue.out: the fade off the field

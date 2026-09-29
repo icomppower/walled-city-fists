@@ -40,7 +40,9 @@ import { createPrologue } from './story/prologue.js';
 import { createTouch } from './ui/touch.js';
 import { createResult } from './story/result.js';
 import { createCutscene } from './story/cutscenes/player.js';
-import { difficulty, recordClear } from './core/difficulty.js';
+import { difficulty, recordClear, setDifficulty, DIFFS } from './core/difficulty.js';
+import { markCleared } from './story/campaign.js';
+import { freeChapter } from './story/free.js';
 
 const params = new URLSearchParams(location.search);
 // mobile quality tier (touch hook): coarse pointers get 150 enemies, no MSAA / DoF, half-res bloom; ?hq forces full.
@@ -228,7 +230,7 @@ async function deploy(c) {
   L.ready(); sfx('ok');
   await sleep(450);
   if (state !== 'loading') return;
-  inkWipe(() => flow.go(c.mode === 'story' && !c.retry ? 'prologue' : 'battle', c));
+  inkWipe(() => flow.go(c.mode === 'story' && !c.retry && resolveChapter(c.chapter, c.char).PROLOGUE ? 'prologue' : 'battle', c));
 }
 const screens = {
   title: createTitle($('title'), flow), select: createSelect($('select'), flow), loading: createLoading($('loading')),
@@ -240,6 +242,7 @@ const screens = {
 // a win records the clear (上級 / 修羅 opens 修羅: unlock = the result screen announces it)
 on('story:end', (e) => {
   const unlock = e.win && recordClear(game.diff);
+  if (e.win && ctx.campaign) markCleared(ctx.chapter);                 // 故事: the next chapter opens
   inkWipe(() => flow.go('result', { ...ctx, win: e.win, stats: e.stats, diff: game.diff, unlock }));
 });
 addEventListener('keydown', (e) => {
@@ -265,5 +268,18 @@ const frame = (now) => {
 
 const dev = params.get('go');
 // the page opens under full ink (index.html): the first screen is built and compiled under it, then the ink sweeps off
-inkBoot(() => dev ? flow.go('battle', { mode: dev === 'story' ? 'story' : 'free', char: params.get('char') || 'zhaoyun', chapter: params.get('ch') || undefined }) : flow.go('title'));
+// ?go=free&char=tit|chui&map=<id>&boss=<id>[&diff=<id>] — 自由 on a map (the dev free field with &ch=); ?go=cut&id=<id> — 影院
+if (params.get('diff')) { const d = DIFFS.find((q) => q.id === params.get('diff')); if (d) setDifficulty(d); }
+function deepLink() {
+  const char = params.get('char') || 'tit';
+  if (dev === 'free' && !params.has('ch')) return flow.go('battle', { mode: 'story', char, chapter: freeChapter(params.get('map') || 'alleys', params.get('boss')).id, free: true });
+  if (dev === 'cut') {
+    const id = params.get('id') || 'between1', back = { state: 'title', ctx: { panel: 'gallery' } };
+    if (/^kc[1-4]$/.test(id)) return flow.go('prologue', { mode: 'story', char, chapter: id, gallery: true });
+    if (id === 'ending') return flow.go('ending', { mode: 'story', char, chapter: 'kc4', gallery: true });
+    return flow.go('cutscene', { id, then: back });
+  }
+  return flow.go('battle', { mode: dev === 'story' ? 'story' : 'free', char: params.get('char') || 'zhaoyun', chapter: params.get('ch') || undefined });
+}
+inkBoot(() => dev ? deepLink() : flow.go('title'));
 requestAnimationFrame(frame);
