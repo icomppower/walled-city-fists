@@ -3,7 +3,7 @@
 //   node bench/maps/flyover.mjs sheep1 "x,z,yaw;…"
 import { openGame } from '../harness/browser.mjs';
 const [chapter = 'sheep1', spots = '0,-128,0;0,-58,0;-34,-44,0.3;0,-12,0;0,18,3.14;8,50,0.4;10,80,0'] = process.argv.slice(2);
-const g = await openGame({ query: `?go=free&char=gok&ch=${chapter}` }), P = g.page;
+const g = await openGame({ query: `?go=free&char=${process.argv[4] || 'tit'}&ch=${chapter}` }), P = g.page;
 await P.waitForTimeout(2500);
 let k = 0;
 for (const s of spots.split(';')) {

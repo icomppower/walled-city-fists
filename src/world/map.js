@@ -21,12 +21,13 @@
 // The crowd's spatial grid spans ±240 m (crowd.js): every map must fit inside it.
 import { noise2, smooth, rectIn } from './mapkit.js';
 import DINGJUN from './maps/dingjun/map.js';
+import ALLEYS from './maps/alleys/map.js';
 
 export { noise2, smooth };
 
 /** Every battlefield by id. New maps register with one import + one entry. */
-export const MAPS = { dingjun: DINGJUN };
-export const DEFAULT_MAP = 'dingjun';                // boot / title field until 城寨拳王's first map exists
+export const MAPS = { dingjun: DINGJUN, alleys: ALLEYS };
+export const DEFAULT_MAP = 'alleys';                 // boot / title field: 巷戰 (定軍山 stays a ?dev chapter)
 
 // ---- live bindings onto the active map (setMap)
 export let MAP, WALL_Z, GATE_X, CAMP_H, SUMMIT_H, WATER_Y, riverZ, FORDS, ROUTE, GATES, PIECE_IDS, TERRAIN;

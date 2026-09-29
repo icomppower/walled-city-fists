@@ -1,10 +1,10 @@
-// Scroll gate (Scroll Cutscenes page): every card of every 香港自由戰士 scroll (PROLOGUE, ENDING) has ≤ 3 columns of ≤ 7
+// Scroll gate (Scroll Cutscenes page): every card of every 城寨拳王 scroll (PROLOGUE, ENDING) has ≤ 3 columns of ≤ 7
 // characters (spaces don't count), an English line, and only marks / arrows the map defines (data-id in MAP).
 //   node --import ./bench/harness/register.mjs bench/harness/cols.mjs
 import { CHAPTERS } from '../../src/story/chapters.js';
 let bad = 0, cards = 0;
 for (const [id, C] of Object.entries(CHAPTERS)) {
-  if (!/^hk/.test(id)) continue;
+  if (!/^kc/.test(id)) continue;
   const ids = new Set([...C.MAP.matchAll(/data-id="([^"]+)"/g)].map((m) => m[1]));
   for (const [name, list] of [['PROLOGUE', C.PROLOGUE], ['ENDING', C.ENDING]]) for (const [k, card] of (list || []).entries()) {
     cards++;

@@ -10,7 +10,7 @@ not `done`.
 | 1 阿鐵 tit | done | gates 6/6 (moves 15/15, onsets = frame table: n1 11 · n2 13 · n3 12 · c1 20; N-string live gaps 25 25 26 25 27 sf; pole ≥ 0.23 m above ground; feet slide ≤ 0.95 cm; Musou 39/40 of a packed ring); Musou at 600 enemies p95 16.8 ms (= Zhao Yun 16.8, 60 fps); model critic 2 rounds → P1 0 (r1: brows 1 voxel tall — the face box stopped under the top brow row; mouth too red → P2 fixed); bot WIN ch1 (?dev) × steady 5:55 / rush 6:56 / back 7:13, rank S; title tag 阿鐵, 0 errors |
 | 2 阿翠 chui | done | gates 6/6 (moves 15/15, onsets = frame table: n1 7 · n2 7 · n3 11 · c1 12/22/32/41; N-string live gaps 17 18 18 18 18 sf; dash cancels on N3 (f15) / N5 (f11); blades ≥ 0.41 m above ground; feet ≤ 0.69 cm; Musou 39/40); C3 chain punches 10 hits; Musou at 600 enemies p95 16.7 ms (= Zhao Yun); model critic 2 rounds → P1 0 (r1: the mandarin collar read as a gold box frame; the jacket back read as stripes → subtle folds; P2 thimble hidden → bigger, silver); bot WIN ch1 (?dev) × steady 7:48 / rush 7:51 / back 6:48, rank S; title tags 阿鐵 · 阿翠 |
 | 3 Enemy side | done | skins serpent / khaki / resident / kids, officers chain / blade, bosses ox / swallow / goldtooth / serpent (src/chars/officers/kc/); boss gate 4/4 as tit and 4/4 as chui — phase HP on its first frame (tit / chui): ox 59.77 / 59.77 · 24.80 / 24.85 %, swallow 49.80 / 49.80 · 24.72 / 24.80 %, goldtooth 49.80 / 49.80 · 24.80 / 24.86 %, serpent 74.80 / 74.91 · 49.80 / 49.80 · 24.67 / 24.97 %; banners on the phase frame; behaviours: ox charges + ≥ 3 slams, swallow knives + roof-to-roof leaps + knife rain, goldtooth revolver bursts + 2 khaki squads + power cut, serpent N1 / N2 / C1 + 2 elites + rain / neon + P4 leap slams; KO → win, kneels, weapon on the ground (guandao snapped); lineup critic 3 rounds → P1 0 (r1: 蛇王 / 飛燕 had no eyes — face paint missed the 0.026 m voxel centres; r2: the KO'd raised hand held the revolver / knife fan → holster + bandolier); content: no badges, insignia, real gang names or text |
-| 4 kc1 alleys | pending | |
+| 4 kc1 alleys | done | map `alleys` (market → lane → irongate → yamen, gates ironGate / yamenDoor) + world, ink map kcmap.js, kc1.js (3-card prologue, 13 beats, iron gate HP objective, jet set-piece, burst pipes, 鐵牛, lanterns relit → win, epilogue); bot WIN 6/6 (tit steady 4:14 / rush 4:21 / back 4:07, chui 4:23 / 4:28 / 5:20; rank S-A); map gate 6/6 per playable (0 NaN, 0 off-field, 0 teleports, ironGate + yamenDoor crossed); scroll columns 3/3 cards; touch-only real-page run WIN as 阿翠 (Pixel 7 landscape, mobile tier, 1190 taps, 0 page errors); result card fits 2/2 (1280×720, 844×390); flyover critic 3 rounds (r1: walls on the wrong side inside the market / courtyard, bulbs and pipes at camera height; r2: blocks intruding at the lane's jogs → footprint test vs the walk field, lensClear on props; r3: washed-out ambient → darker hemi, bulbs / neon carry the light) |
 | 5 kc2 rooftops | pending | |
 | 6 kc3 factories | pending | |
 | 7 kc4 tower + ENDING | pending | |
@@ -20,7 +20,9 @@ not `done`.
 | 10 Critic rounds | pending | |
 | 11 Ship | pending | |
 
-**Next action:** stage 4 kc1 alleys.
+**Next action:** stage 5 kc2 rooftops.
+
+**MILESTONE — kc1 playable** (2026-09-29): kc1 巷戰 plays start to finish (bot × 6, touch run). Production (= main): https://walled-city-fists.vercel.app/?go=story&char=tit&ch=kc1
 
 **Live:** https://walled-city-fists.vercel.app
 
@@ -65,3 +67,8 @@ not `done`.
   first leap, 蛇王's enraged leap slam) have super armour: 阿翠's chain punches otherwise kept them staggered through the
   whole short phase.
 - Swing / Knife / shot damage all go through hero.hurt (dodge, i-frames and the Musou protect).
+- kc1: the lane is 6 m walkable (a crowd can't fight in the real 1 m alleys; 1 m side alleys are dressing). Waves are off
+  in the lane and at the gate: reinforcements jammed 70-100 soldiers into the alley and the bot stalled 3 min.
+- kc1 prologue text: the page's 收数 / 掼 are the simplified forms; the scroll uses 收數 / 摜.
+- The camera may sit up to 3 m past the walk edge (occlusion.js slack): kc worlds put facades ≥ 1.2 m past the edge,
+  skip any block whose footprint reaches within 1 m of the walk field, and give the prop material lensClear (2.6 m).

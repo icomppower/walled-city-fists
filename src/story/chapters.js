@@ -12,6 +12,7 @@
 //   skin { foe, ally }  crowd skins (src/chars/officers/index.js SKINS; default: the Wei army / Shu allies)
 //   sides.names { us: {zh, en}, them: {zh, en} }   who the HUD's reinforcement banners name
 import * as ch1 from './ch1.js';
+import * as kc1 from './kc1.js';
 import { DEV } from '../chars/index.js';
 
 const LIST = [
@@ -20,6 +21,13 @@ const LIST = [
     title: { small: '第一章', zh: '定軍山', en: 'CHAPTER I · MOUNT DINGJUN' }, sides: { us: '蜀', them: '魏' },
     // the van drawn up either side of the road inside the 本陣 gate, holding rank until the hero marches past
     allies: [-1, 1].map((sx) => ({ x: sx * 5.575, z: -121.6, n: 12, cols: 4, hold: true })),
+  },
+  {
+    ...kc1, id: 'kc1', map: 'alleys', cast: ['tit', 'chui'],
+    title: { small: '第一章', zh: '巷戰', en: 'CHAPTER I · THE ALLEYS' },
+    sides: { us: '坊', them: '蛇', names: { us: { zh: '街坊', en: 'Residents' }, them: { zh: '黑蛇幫', en: 'Black Serpent' } } },
+    skin: { foe: 'serpent', ally: 'resident' },
+    allies: [-1, 1].map((sx) => ({ x: sx * 5, z: -136, n: 8, cols: 4, hold: true })),   // market neighbours by 阿鐵's stall
   },
 ];
 

@@ -10,11 +10,17 @@ echo "== rig / dual-wield probes";   g $N bench/harness/rigprobe.mjs; g $N bench
 echo "== ch1 bot (?dev chapter)";    g $N bench/bot/run.mjs --char zhaoyun --quiet
 echo "== character + boss gates";   g $N bench/chars/gates.mjs tit; g $N bench/chars/gates.mjs chui
 g $N bench/chars/boss.mjs tit; g $N bench/chars/boss.mjs chui
+echo "== scroll columns";            g $N bench/harness/cols.mjs
+for ch in kc1; do
+  echo "== $ch: map gate + bot (both playables × steady / rush / back)"
+  g $N bench/maps/mapcheck.mjs $ch tit; g $N bench/maps/mapcheck.mjs $ch chui
+  for c in tit chui; do for st in steady rush back; do g $N bench/bot/run.mjs --char $c --chapter $ch --style $st --quiet; done; done
+done
 for c in tit chui; do for st in steady rush back; do g $N bench/bot/run.mjs --char $c --style $st --quiet; done; done
 [ "$1" = "--quick" ] && { echo "QUICK GATES GREEN"; exit 0; }
 echo "== Chrome: boot, title, scrolls"; g node bench/harness/smoke.mjs "?x" 4; g node bench/harness/title-check.mjs bench/out
-g node bench/harness/shots-scroll.mjs ch1
-echo "== Chrome: crowd";             g node bench/harness/crowdprobe.mjs ch1
+g node bench/harness/shots-scroll.mjs ch1; g node bench/harness/shots-scroll.mjs kc1 --char tit
+echo "== Chrome: crowd, result cards"; g node bench/harness/crowdprobe.mjs ch1; g node bench/harness/result-fit.mjs ../out
 echo "== Chrome: ch1 checkpoints";   g node bench/harness/xcheck.mjs ch1-zhaoyun 3600; g node bench/harness/xcheck.mjs ch1-huangzhong 3600
 echo "== Chrome: Musou frame time"; g node bench/chars/perf.mjs tit chui zhaoyun
 echo "== Chrome: touch hook";        g node bench/harness/touch-twin.mjs; g node bench/harness/touch-ui.mjs

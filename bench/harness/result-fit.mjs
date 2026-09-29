@@ -1,9 +1,10 @@
-// Result-card gate (Scroll Cutscenes page): each hk chapter's win card at 1280×720 and 844×390 (touch) — the whole
+// Result-card gate (Scrolls & Cutscenes page): each kc chapter's win card at 1280×720 and 844×390 (touch) — the whole
 // epilogue is reachable (inside the viewport, or its scroll container scrolls to it), the continue button is inside the
-// viewport and hit-testable at its centre (elementFromPoint), 0 console errors. Shots → bench/shots/5/.
+// viewport and hit-testable at its centre (elementFromPoint), 0 console errors. Shots → bench/shots/<dir = 4>/.
+//   node bench/harness/result-fit.mjs [dir]
 import { chromium } from 'playwright-core';
 import { serve } from './browser.mjs';
-const out = new URL('../shots/5/', import.meta.url).pathname;
+const out = new URL(`../shots/${process.argv[2] || '4'}/`, import.meta.url).pathname;
 const srv = await serve(), browser = await chromium.launch({ channel: 'chrome', args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
 let bad = 0;
 for (const [w, h, touch] of [[1280, 720, false], [844, 390, true]]) {
@@ -11,8 +12,9 @@ for (const [w, h, touch] of [[1280, 720, false], [844, 390, true]]) {
   const page = await ctx.newPage(), errors = [];
   page.on('pageerror', (e) => errors.push(String(e))); page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
   await page.goto(srv.url + '?x'); await page.waitForFunction(() => window.__vm?.state === 'title', null, { timeout: 60000 }); await page.waitForTimeout(1500);
-  for (const ch of ['hk1', 'hk2', 'hk3', 'hk4']) {
-    await page.evaluate((ch) => __vm.flow.go('result', { mode: 'story', char: 'lungjai', chapter: ch, win: true, stats: { kos: 1500, time: 300, hpMax: 400, maxChain: 120, dmg: 60, rank: 'A' } }), ch);
+  const chs = await page.evaluate(async () => Object.keys((await import('/src/story/chapters.js')).CHAPTERS).filter((k) => /^kc/.test(k)));
+  for (const ch of chs) {
+    await page.evaluate((ch) => __vm.flow.go('result', { mode: 'story', char: 'tit', chapter: ch, win: true, stats: { kos: 1500, time: 300, hpMax: 400, maxChain: 120, dmg: 60, rank: 'A' } }), ch);
     await page.waitForTimeout(4200);
     const r = await page.evaluate(() => {
       const epi = document.querySelector('#result .rs-epi'), last = epi.lastElementChild, btn = document.querySelector('#result .rs-btns button');
@@ -34,5 +36,5 @@ for (const [w, h, touch] of [[1280, 720, false], [844, 390, true]]) {
   await ctx.close();
 }
 await browser.close(); srv.close();
-console.log(bad ? `RESULT FIT FAIL ${bad}` : 'RESULT FIT PASS 8/8');
+console.log(bad ? `RESULT FIT FAIL ${bad}` : 'RESULT FIT PASS (every kc chapter × 1280×720 / 844×390)');
 process.exit(bad ? 1 : 0);
