@@ -13,6 +13,7 @@
 //   sides.names { us: {zh, en}, them: {zh, en} }   who the HUD's reinforcement banners name
 import * as ch1 from './ch1.js';
 import * as kc1 from './kc1.js';
+import * as kc2 from './kc2.js';
 import { DEV } from '../chars/index.js';
 
 const LIST = [
@@ -28,6 +29,13 @@ const LIST = [
     sides: { us: '坊', them: '蛇', names: { us: { zh: '街坊', en: 'Residents' }, them: { zh: '黑蛇幫', en: 'Black Serpent' } } },
     skin: { foe: 'serpent', ally: 'resident' },
     allies: [-1, 1].map((sx) => ({ x: sx * 5, z: -136, n: 8, cols: 4, hold: true })),   // market neighbours by 阿鐵's stall
+  },
+  {
+    ...kc2, id: 'kc2', map: 'rooftops', cast: ['tit', 'chui'],
+    title: { small: '第二章', zh: '天台', en: 'CHAPTER II · THE ROOFTOPS' },
+    sides: { us: '坊', them: '蛇', names: { us: { zh: '街坊', en: 'Residents' }, them: { zh: '黑蛇幫', en: 'Black Serpent' } } },
+    skin: { foe: 'serpent', ally: 'resident' },
+    allies: [{ x: 6, z: -140, n: 6, cols: 3, hold: true }],                                  // neighbours woken by the fight
   },
 ];
 

@@ -22,11 +22,12 @@
 import { noise2, smooth, rectIn } from './mapkit.js';
 import DINGJUN from './maps/dingjun/map.js';
 import ALLEYS from './maps/alleys/map.js';
+import ROOFTOPS from './maps/rooftops/map.js';
 
 export { noise2, smooth };
 
 /** Every battlefield by id. New maps register with one import + one entry. */
-export const MAPS = { dingjun: DINGJUN, alleys: ALLEYS };
+export const MAPS = { dingjun: DINGJUN, alleys: ALLEYS, rooftops: ROOFTOPS };
 export const DEFAULT_MAP = 'alleys';                 // boot / title field: 巷戰 (定軍山 stays a ?dev chapter)
 
 // ---- live bindings onto the active map (setMap)

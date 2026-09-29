@@ -11,7 +11,7 @@ echo "== ch1 bot (?dev chapter)";    g $N bench/bot/run.mjs --char zhaoyun --qui
 echo "== character + boss gates";   g $N bench/chars/gates.mjs tit; g $N bench/chars/gates.mjs chui
 g $N bench/chars/boss.mjs tit; g $N bench/chars/boss.mjs chui
 echo "== scroll columns";            g $N bench/harness/cols.mjs
-for ch in kc1; do
+for ch in kc1 kc2; do
   echo "== $ch: map gate + bot (both playables × steady / rush / back)"
   g $N bench/maps/mapcheck.mjs $ch tit; g $N bench/maps/mapcheck.mjs $ch chui
   for c in tit chui; do for st in steady rush back; do g $N bench/bot/run.mjs --char $c --chapter $ch --style $st --quiet; done; done
