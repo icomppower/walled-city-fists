@@ -63,7 +63,7 @@ export const KC_MAP = `
     <circle cx="740" cy="470" r="40" fill="#cdb183" stroke="#3a2a1a" stroke-width="3"/>
   </g>
   <g class="pl-mark" data-id="city" filter="url(#pl-glow)" fill="#e8b84a" opacity=".28"><ellipse cx="740" cy="470" rx="200" ry="150"/></g>
-  <g class="pl-mark" data-id="dawnsky" filter="url(#pl-glow)" fill="#f0c860" opacity=".45"><ellipse cx="1000" cy="200" rx="380" ry="90"/></g>
+  <g class="pl-mark" data-id="dawnsky" filter="url(#pl-glow)" fill="#f0c860" opacity=".3"><ellipse cx="1000" cy="200" rx="380" ry="90"/></g>
   <g class="pl-mark" data-id="harbour"><text class="river" x="1300" y="820">九 龍 灣</text></g>
   <rect width="1600" height="900" filter="url(#pl-grain)"/>
   <g class="pl-arrows" filter="url(#pl-ink)">${arrows(ARROWS)}</g>

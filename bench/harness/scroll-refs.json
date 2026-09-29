@@ -59,5 +59,65 @@
   "9efd9b3c79f0ded2",
   "58071c16c7ecdcf8",
   "1253dcf6d814129a"
+ ],
+ "kc4-chui-ending": [
+  "f6b3d1116e851c08",
+  "6b5facb68f0f956f",
+  "d9d7d8e3b1056fc1"
+ ],
+ "kc4-chui": [
+  "4b2129b1965d26f8",
+  "fcbcd2316581ad94",
+  "9659fdcda04f9c8b"
+ ],
+ "kc2-chui": [
+  "4a18801af5a2bfe1",
+  "0ab63da65f597d28",
+  "132c9bca036b47db"
+ ],
+ "kc3-tit": [
+  "245882e83230cbc1",
+  "8304483e6e2ff38c",
+  "79fe2a5b365a9683"
+ ],
+ "kc1 --char tit-zhaoyun": [
+  "03524d5acf1cc74b",
+  "7fce499eaff0a918",
+  "b7cd58e359b4e41e",
+  "c9c530a65024e77b",
+  "1cbb52b2e411cb35",
+  "b8e1cae7a33edb03"
+ ],
+ "kc2 --char chui-zhaoyun": [
+  "03524d5acf1cc74b",
+  "1a42a46eda94ba88",
+  "b7cd58e359b4e41e",
+  "c9c530a65024e77b",
+  "1cbb52b2e411cb35",
+  "5fa3f96c1c998d33"
+ ],
+ "kc3 --char tit-zhaoyun": [
+  "03524d5acf1cc74b",
+  "7fce499eaff0a918",
+  "b7cd58e359b4e41e",
+  "c9c530a65024e77b",
+  "1cbb52b2e411cb35",
+  "b8e1cae7a33edb03"
+ ],
+ "kc4 --char chui-zhaoyun": [
+  "03524d5acf1cc74b",
+  "7fce499eaff0a918",
+  "b7cd58e359b4e41e",
+  "c9c530a65024e77b",
+  "1cbb52b2e411cb35",
+  "5fa3f96c1c998d33"
+ ],
+ "kc4 --char chui --ending-zhaoyun": [
+  "03524d5acf1cc74b",
+  "7fce499eaff0a918",
+  "b7cd58e359b4e41e",
+  "c9c530a65024e77b",
+  "1cbb52b2e411cb35",
+  "5fa3f96c1c998d33"
  ]
 }

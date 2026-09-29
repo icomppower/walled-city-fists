@@ -15,6 +15,7 @@ import * as ch1 from './ch1.js';
 import * as kc1 from './kc1.js';
 import * as kc2 from './kc2.js';
 import * as kc3 from './kc3.js';
+import * as kc4 from './kc4.js';
 import { DEV } from '../chars/index.js';
 
 const LIST = [
@@ -44,6 +45,13 @@ const LIST = [
     sides: { us: '坊', them: '差', names: { us: { zh: '街坊', en: 'Residents' }, them: { zh: '金牙嘅人', en: 'Gold-Tooth\'s men' } } },
     skin: { foe: 'khaki', ally: 'resident' },
     allies: [-1, 1].map((sx) => ({ x: sx * 5, z: -146, n: 6, cols: 3, hold: true })),       // residents come in with lamps
+  },
+  {
+    ...kc4, id: 'kc4', map: 'tower', cast: ['tit', 'chui'],
+    title: { small: '第四章', zh: '蛇王樓', en: 'CHAPTER IV · THE SERPENT TOWER' },
+    sides: { us: '坊', them: '蛇', names: { us: { zh: '街坊', en: 'Residents' }, them: { zh: '黑蛇幫', en: 'Black Serpent' } } },
+    skin: { foe: 'serpent', ally: 'resident' },
+    allies: [-1, 1].map((sx) => ({ x: sx * 6, z: -144, n: 12, cols: 4, hold: true })),      // the whole city marches in behind them
   },
 ];
 
