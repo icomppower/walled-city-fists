@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="data:,">
-<title>香港自由戰士 HK Freedom Fighter</title>
+<title>城寨拳王 Walled City Fists</title>
 <script type="importmap">
 { "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
 </script>
@@ -767,7 +767,7 @@
   #result.lose .rs-epi { animation-delay: 1.9s; }
   #result .rs-epi p { margin: 0 0 1.1rem; font: 700 2.1rem/1.55 var(--kai); color: #efe3cf; }
   #result .rs-epi small { display: block; font: 500 1.35rem/1.45 var(--sans); letter-spacing: .02em; color: #cdbb9c; }
-  /* 香港自由戰士: the chapter epilogues are the Phaser game's history paragraphs (long) — the block scrolls; quotes italic;
+  /* the chapter epilogues can run long — the block scrolls; quotes italic;
      a phone held sideways (≤ 500 px tall: 1rem ≈ 5 px) gets readable pixel sizes and the whole card scrolls */
   #result .rs-epi { max-height: 19rem; overflow-y: auto; padding-right: 1rem; scrollbar-width: thin; }
   #result .rs-epi i { font-style: italic; }
@@ -794,17 +794,16 @@
     :is(#prologue, #ending).out :is(.pl-paper, .pl-rod) { scale: none; }
   }
 
-  /* scroll player (story lane): arrow sides of the 香港 map (hk gold ink, riot indigo, white grey wash), the tribute card */
-  :is(#prologue, #ending) .pl-arw.hk > path { stroke: #c9a227; }
-  :is(#prologue, #ending) .pl-arw.riot > path { stroke: #2c3e6b; }
-  :is(#prologue, #ending) .pl-arw.white > path { stroke: #8a857c; }
-  :is(#prologue, #ending) .pl-arw.hk .hd { fill: #c9a227; }
-  :is(#prologue, #ending) .pl-arw.riot .hd { fill: #2c3e6b; }
-  :is(#prologue, #ending) .pl-arw.white .hd { fill: #8a857c; }
-  :is(#prologue, #ending) .pl-arw.hk.dot.on > path.s { stroke-dasharray: .012 .018; stroke-dashoffset: 0; transition: none; }
-  :is(#prologue, #ending) .pl-labels .riot text { fill: #2c3e6b; }
-  :is(#prologue, #ending) .pl-labels .white text { fill: #5e5a52; }
-  :is(#prologue, #ending) .pl-labels .hk text { fill: #7a5c0c; }
+  /* scroll player (story lane): arrow sides of the 城寨 ink map (folk gold ink, gang vermilion), the tribute card */
+  :is(#prologue, #ending) .pl-arw.folk > path { stroke: #c9a227; }
+  :is(#prologue, #ending) .pl-arw.gang > path { stroke: #b3321e; }
+  :is(#prologue, #ending) .pl-arw.jet > path { stroke: #4a4a52; }
+  :is(#prologue, #ending) .pl-arw.folk .hd { fill: #c9a227; }
+  :is(#prologue, #ending) .pl-arw.gang .hd { fill: #b3321e; }
+  :is(#prologue, #ending) .pl-arw.jet .hd { fill: #4a4a52; }
+  :is(#prologue, #ending) .pl-arw.folk.dot.on > path.s { stroke-dasharray: .012 .018; stroke-dashoffset: 0; transition: none; }
+  :is(#prologue, #ending) .pl-labels .gang text { fill: #8e2414; }
+  :is(#prologue, #ending) .pl-labels .folk text { fill: #7a5c0c; }
   #ending .pl-tribute { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: center;
     padding: 0 14vw; gap: 1.6rem; color: var(--ink); background: rgba(216,193,151,.94); opacity: 0; pointer-events: none; }
   #ending.tribute .pl-tribute { opacity: 1; pointer-events: auto; transition: opacity .8s; }

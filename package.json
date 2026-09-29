@@ -1,8 +1,8 @@
 {
-  "name": "hk-freedom-voxel",
+  "name": "walled-city-fists",
   "private": true,
   "type": "module",
-  "description": "香港自由戰士 HK Freedom Fighter — a voxel rebuild on mike007jd/voxel-musou's engine (via icomppower/sheep-village). No build step: the game is static (index.html). Tooling below is for the bench harness only.",
+  "description": "城寨拳王 Walled City Fists — an original 1970s kung fu musou on mike007jd/voxel-musou's engine (via icomppower/hk-freedom-voxel). No build step: the game is static (index.html). Tooling below is for the bench harness only.",
   "scripts": {
     "gate": "node --import ./bench/harness/register.mjs bench/harness/check.mjs",
     "record": "node --import ./bench/harness/register.mjs bench/harness/record.mjs"
