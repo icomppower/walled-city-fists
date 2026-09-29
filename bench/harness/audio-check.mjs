@@ -1,7 +1,8 @@
 // Sound gate (stage 9), real page: an AnalyserNode on the master output (after the soft-clip ceiling) tracks the sample
 // peak through free battles on all four maps (bot at 4× + a Musou each), between2 (the jet's Doppler) and the end scene
 // (the end-title chord) — peak < −1 dBFS; the 城寨 bank bakes; no audio errors; a skipped cutscene's sound fades out in
-// 0.5 s (its bus at ≈ half after 0.25 s, silent after 0.55 s).
+// 0.5 s (its bus at ≈ half after 0.25 s, silent after 0.55 s). Generated files (media/audio/index.json, AI Studio): every
+// listed file decodes; each map / cutscene plays its own track where one exists; voiced lines play in battle.
 //   node bench/harness/audio-check.mjs
 import { openGame } from './browser.mjs';
 const res = [], ok = (n, v, x = '') => { res.push(v); console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${x ? '  ' + x : ''}`); };
@@ -21,12 +22,13 @@ await wait(2000); await P.keyboard.press('Enter'); await wait(500);          // 
 const baked = await P.waitForFunction(() => window.__wcfAudio && window.__wcfAudio.kc.K.pad && window.__wcfAudio.kc.K.jet && window.__wcfAudio.kc.K.endChord, null, { timeout: 30000 }).then(() => true, () => false);
 ok('城寨 bank baked (theme, pad, ambiences, jet, end chord)', baked, await P.evaluate(() => Object.keys(window.__wcfAudio.kc.K).join(' ')));
 ok('audio context running', (await P.evaluate(() => window.__wcfAudio.ctx.state)) === 'running');
-const peaks = {};
+const peaks = {}, tracks = {};
 for (const map of ['alleys', 'rooftops', 'factories', 'tower']) {
   const { freeChapter } = { freeChapter: null };
   await P.evaluate(async (map) => { const f = await import('/src/story/free.js'); window.__botOn = true; __vm.flow.go('battle', { mode: 'story', char: 'tit', chapter: f.freeChapter(map, null).id, free: true }); }, map);
   await P.evaluate(() => { window.__peak = 0; window.__rms = []; });
   await wait(12000);
+  tracks[map] = await P.evaluate(() => window.__wcfAudio.kc.track());
   peaks[map] = await P.evaluate(() => ({ peak: window.__peak, rms: window.__rms.reduce((a, v) => a + v, 0) / Math.max(1, window.__rms.length) }));
 }
 await P.evaluate(() => { window.__botOn = false; });
@@ -34,10 +36,23 @@ for (const [m, r] of Object.entries(peaks)) ok(`${m}: peak < −1 dBFS, sound pr
 for (const id of ['between2', 'end']) {
   await P.evaluate(() => { window.__peak = 0; window.__rms = []; });
   await P.evaluate((id) => __vm.flow.go('cutscene', { id, then: 'title' }), id);
+  await wait(3000); tracks[id] = await P.evaluate(() => window.__wcfAudio.kc.track());
   await P.waitForFunction(() => __vm.state === 'title', null, { timeout: 60000 });
   const r = await P.evaluate(() => ({ peak: window.__peak, rms: window.__rms.reduce((a, v) => a + v, 0) / Math.max(1, window.__rms.length) }));
   ok(`${id} (${id === 'end' ? 'the end chord' : 'the jet Doppler'}): peak < −1 dBFS`, r.peak < 0.891 && r.rms > 0.003, `peak ${(20 * Math.log10(r.peak)).toFixed(1)} dBFS, mean rms ${(20 * Math.log10(r.rms)).toFixed(1)} dBFS`);
 }
+// generated files
+const idx = await P.evaluate(() => window.__wcfAudio.kc.files.index);
+const nFiles = Object.keys(idx.music).length + Object.keys(idx.vo).length + Object.values(idx.shout).reduce((a, s) => a + s.light.length + s.heavy.length, 0);
+if (nFiles) {
+  const dec = await P.evaluate(async () => { const F = window.__wcfAudio.kc.files, I = F.index, all = [...Object.values(I.music), ...Object.values(I.vo), ...Object.values(I.shout).flatMap((s) => [...s.light, ...s.heavy])];
+    const b = await Promise.all(all.map((f) => F.load(f))); return { n: all.length, bad: all.filter((f, i) => !b[i]) }; });
+  ok('generated files decode', dec.bad.length === 0, `${dec.n - dec.bad.length}/${dec.n}${dec.bad.length ? ' bad: ' + dec.bad.slice(0, 4).join(' ') : ''}`);
+  const want = Object.keys(tracks).filter((k) => idx.music[k]);
+  ok('each map / scene plays its own track', want.every((k) => tracks[k] === k || (tracks[k] === 'boss' && idx.music.boss)), want.map((k) => `${k}→${tracks[k]}`).join(' '));
+  const vo = await P.evaluate(() => window.__wcfAudio.kc.stats.vo);
+  if (Object.keys(idx.vo).length) ok('voiced lines play', vo > 0, `${vo} lines voiced`);
+} else console.log('     (no generated audio files yet: synth only)');
 // the skip fade
 await P.evaluate(() => __vm.flow.go('cutscene', { id: 'end', then: 'title' }));
 await wait(5000);

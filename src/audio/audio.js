@@ -54,7 +54,8 @@ export function createAudio(game) {
   const B = {};                               // filled progressively by the offline bake (combat sounds first)
   let bankOk; const bankReady = new Promise((r) => { bankOk = r; });
   buildBank(B).then(() => { startBed(); bankOk(); }, (e) => console.warn('audio bank', e));
-  let bedScale, kc = null;                    // 城寨拳王 layer (kcaudio.js): the base loops' scene level, the layer itself
+  let bedScale, procMus, kc = null;          // 城寨拳王 layer (kcaudio.js): the base loops' scene level, the synth drums +
+                                              // theme (0 while a generated track plays), the layer itself
 
   function start() {
     if (ctx) { if (ctx.state !== 'running') ctx.resume(); return; }
@@ -86,9 +87,10 @@ export function createAudio(game) {
     revIn = ctx.createGain(); revIn.connect(rev); rev.connect(sides[3]).connect(mix);   // the wash ducks under hits too
     bedDuck = ctx.createGain(); bedScale = ctx.createGain(); bedDuck.connect(bedScale).connect(mix);
     bedBus = ctx.createGain(); bedBus.connect(sides[1]).connect(bedDuck);
+    procMus = ctx.createGain(); procMus.connect(bedBus);
     const bedSend = ctx.createGain(); bedSend.gain.value = 0.4; bedDuck.connect(bedSend).connect(revIn);
     startBed();
-    kc = createKcLayer({ ctx, out: mix, revIn, bedScale, B, game, bankReady });
+    kc = createKcLayer({ ctx, out: mix, revIn, bedScale, procMus, vox, B, game, bankReady });
     window.__wcfAudio = { ctx, tap: clip, kc };                // bench/harness/audio-check.mjs (peaks, the skip fade)
   }
   addEventListener('pointerdown', start);
@@ -149,12 +151,12 @@ export function createAudio(game) {
     if (bedOn || !ctx || !B.bed) return;
     bedOn = true;
     const t0 = ctx.currentTime + 0.03;
-    const loop = (buf) => {                     // starts silent; frame() fades it to the intensity-driven level
+    const loop = (buf, bus = bedBus) => {                     // starts silent; frame() fades it to the intensity-driven level
       const s = ctx.createBufferSource(); s.buffer = buf; s.loop = true;
       const g = ctx.createGain(); g.gain.value = 0;
-      s.connect(g).connect(bedBus); s.start(t0); return g;   // same t0: the 16 s music loop stays locked to the 8 s drums
+      s.connect(g).connect(bus); s.start(t0); return g;   // same t0: the 16 s music loop stays locked to the 8 s drums
     };
-    bedG = loop(B.bed); drumG = loop(B.drums); musicG = loop(B.music);
+    bedG = loop(B.bed); drumG = loop(B.drums, procMus); musicG = loop(B.music, procMus);
   }
 
   // ---- swing cues: read the hero's move clock (read-only) every animation frame

@@ -1,0 +1,485 @@
+[
+ {
+  "key": "72c709",
+  "who": "auntie",
+  "zh": "阿鐵！街市仲有人未走呀！",
+  "en": "Ah Tit! There are still people in the market!",
+  "where": "kc1"
+ },
+ {
+  "key": "7630bc",
+  "who": "chain",
+  "zh": "呢個月嘅數，交嚟！",
+  "en": "This month's money. Hand it over!",
+  "where": "kc1"
+ },
+ {
+  "key": "55e1e4",
+  "who": "auntie",
+  "zh": "阿鐵！佢哋摜爛你個檔呀！",
+  "en": "Ah Tit! They've smashed your stall!",
+  "where": "kc1"
+ },
+ {
+  "key": "156fe6",
+  "who": "tit",
+  "zh": "食飽飯先有力打。",
+  "en": "Eat first. Then we fight.",
+  "where": "kc1"
+ },
+ {
+  "key": "65b6c1",
+  "who": "chui",
+  "zh": "條巷入面仲有好多人。",
+  "en": "There are more of them up the lane.",
+  "where": "kc1"
+ },
+ {
+  "key": "6c5865",
+  "who": "uncle",
+  "zh": "條閘未開，衝過去都冇用！",
+  "en": "The gate's still shut. No use charging it!",
+  "where": "kc1"
+ },
+ {
+  "key": "6c4d80",
+  "who": "uncle",
+  "zh": "飛機嚟喇——耳仔掩住！",
+  "en": "Here comes a plane — cover your ears!",
+  "where": "kc1"
+ },
+ {
+  "key": "09ca18",
+  "who": "chain",
+  "zh": "條巷咁窄，睇你點走！",
+  "en": "Alley's this narrow. Where are you gonna run?",
+  "where": "kc1"
+ },
+ {
+  "key": "3d850e",
+  "who": "uncle",
+  "zh": "我撬住條閘，你擋住佢哋！",
+  "en": "I'll work the gate with the crowbar — you keep them off me!",
+  "where": "kc1"
+ },
+ {
+  "key": "905c30",
+  "who": "auntie",
+  "zh": "先清咗呢度先！",
+  "en": "Clear this square first!",
+  "where": "kc1"
+ },
+ {
+  "key": "109d20",
+  "who": "blade",
+  "zh": "過得呢度，先講。",
+  "en": "Get past me first. Then we'll talk.",
+  "where": "kc1"
+ },
+ {
+  "key": "844776",
+  "who": "auntie",
+  "zh": "個衙門本來係大家嘅！",
+  "en": "That yamen belonged to all of us!",
+  "where": "kc1"
+ },
+ {
+  "key": "ed69eb",
+  "who": "ox",
+  "zh": "呢條巷係我嘅！",
+  "en": "This alley is mine!",
+  "where": "kc1"
+ },
+ {
+  "key": "2b1a93",
+  "who": "ox",
+  "zh": "……我收工。",
+  "en": "...I'm clocking off.",
+  "where": "kc1"
+ },
+ {
+  "key": "86652a",
+  "who": "chui",
+  "zh": "聽朝上天台？",
+  "en": "Up on the roof tomorrow?",
+  "where": "kc1"
+ },
+ {
+  "key": "e53b15",
+  "who": "tit",
+  "zh": "食完先。",
+  "en": "After we eat.",
+  "where": "kc1"
+ },
+ {
+  "key": "6edd94",
+  "who": "ox",
+  "zh": "撞死你！",
+  "en": "I'll run you down!",
+  "where": "kc1"
+ },
+ {
+  "key": "555563",
+  "who": "ox",
+  "zh": "成條巷都震！",
+  "en": "I'll shake this whole alley!",
+  "where": "kc1"
+ },
+ {
+  "key": "297eff",
+  "who": "kid",
+  "zh": "阿翠姐姐，我哋仲喺度呀！",
+  "en": "Miss Chui, we're still up here!",
+  "where": "kc2"
+ },
+ {
+  "key": "496b97",
+  "who": "kid",
+  "zh": "阿翠姐姐！有人上嚟呀！",
+  "en": "Miss Chui! Someone's coming up!",
+  "where": "kc2"
+ },
+ {
+  "key": "cbf5e2",
+  "who": "chui",
+  "zh": "一針一線，一拳一腳。企喺我後面。",
+  "en": "Stitch by stitch, punch by punch. Stay behind me.",
+  "where": "kc2"
+ },
+ {
+  "key": "d0c4a9",
+  "who": "chain",
+  "zh": "天台都係我哋嘅地頭。",
+  "en": "The roofs are our turf too.",
+  "where": "kc2"
+ },
+ {
+  "key": "b44ac3",
+  "who": "chui",
+  "zh": "跟住我，一個拉住一個。",
+  "en": "Follow me. Hold each other's hands.",
+  "where": "kc2"
+ },
+ {
+  "key": "a4e9a9",
+  "who": "uncle",
+  "zh": "塊板仲鎖住，過唔到！",
+  "en": "The plank's still locked. You can't cross!",
+  "where": "kc2"
+ },
+ {
+  "key": "268a85",
+  "who": "uncle",
+  "zh": "飛機過嘅時候，佢哋會企唔穩——趁機！",
+  "en": "When a plane goes over they can't keep their feet — use it!",
+  "where": "kc2"
+ },
+ {
+  "key": "fa410c",
+  "who": "chain",
+  "zh": "塊板咁窄，跌落去就冇得返轉頭！",
+  "en": "Narrow plank. Fall off and you don't come back!",
+  "where": "kc2"
+ },
+ {
+  "key": "cac355",
+  "who": "auntie",
+  "zh": "啲水缸未開，唔好走！",
+  "en": "The tanks aren't open yet. Don't go!",
+  "where": "kc2"
+ },
+ {
+  "key": "77bd73",
+  "who": "auntie",
+  "zh": "成個城寨等緊水呀！",
+  "en": "The whole city is waiting for water!",
+  "where": "kc2"
+ },
+ {
+  "key": "82fcbf",
+  "who": "kid",
+  "zh": "有水喇！樓下有水喇！",
+  "en": "Water! There's water downstairs!",
+  "where": "kc2"
+ },
+ {
+  "key": "b9700e",
+  "who": "swallow",
+  "zh": "天台上面，冇人贏得我。",
+  "en": "Up on the roofs, nobody beats me.",
+  "where": "kc2"
+ },
+ {
+  "key": "b62c4b",
+  "who": "swallow",
+  "zh": "……好快嘅刀。",
+  "en": "...Fast blades.",
+  "where": "kc2"
+ },
+ {
+  "key": "8919e0",
+  "who": "tit",
+  "zh": "落嚟食粥啦。",
+  "en": "Come down and have some congee.",
+  "where": "kc2"
+ },
+ {
+  "key": "52034c",
+  "who": "swallow",
+  "zh": "追得上我先講！",
+  "en": "Catch me first!",
+  "where": "kc2"
+ },
+ {
+  "key": "2fa502",
+  "who": "swallow",
+  "zh": "落刀雨喇！",
+  "en": "Here comes the knife rain!",
+  "where": "kc2"
+ },
+ {
+  "key": "f665c8",
+  "who": "worker",
+  "zh": "仲有人鎖住喺度呀！",
+  "en": "There are still people chained in here!",
+  "where": "kc3"
+ },
+ {
+  "key": "731f80",
+  "who": "worker",
+  "zh": "佢哋用鐵鏈鎖住我哋！",
+  "en": "They've chained us to the benches!",
+  "where": "kc3"
+ },
+ {
+  "key": "653c53",
+  "who": "tit",
+  "zh": "一條條解開佢。",
+  "en": "We'll undo them one by one.",
+  "where": "kc3"
+ },
+ {
+  "key": "8e04bb",
+  "who": "chui",
+  "zh": "一針一線，一條條解開。",
+  "en": "Stitch by stitch — we'll undo every one.",
+  "where": "kc3"
+ },
+ {
+  "key": "167c56",
+  "who": "worker",
+  "zh": "走廊仲有兩個兄弟！",
+  "en": "Two more of us are in the corridor!",
+  "where": "kc3"
+ },
+ {
+  "key": "9dcb0c",
+  "who": "uncle",
+  "zh": "拎住火水燈，跟住我哋！",
+  "en": "Grab a lamp and stay with us!",
+  "where": "kc3"
+ },
+ {
+  "key": "3a6bc9",
+  "who": "chain",
+  "zh": "黑媽媽，睇你點上嚟！",
+  "en": "Pitch dark. Good luck getting up here!",
+  "where": "kc3"
+ },
+ {
+  "key": "604a35",
+  "who": "goldtooth",
+  "zh": "收工之前，茶錢要交齊。",
+  "en": "Before anyone clocks off, the tea money gets paid.",
+  "where": "kc3"
+ },
+ {
+  "key": "48f367",
+  "who": "worker",
+  "zh": "金牙探長……佢帶埋差人上嚟！",
+  "en": "Gold-Tooth... and he's brought his cops!",
+  "where": "kc3"
+ },
+ {
+  "key": "0d91d9",
+  "who": "goldtooth",
+  "zh": "茶錢係規矩嚟。",
+  "en": "Tea money is the rule round here.",
+  "where": "kc3"
+ },
+ {
+  "key": "8856ef",
+  "who": "goldtooth",
+  "zh": "……今次算我輸。",
+  "en": "...This time, I lose.",
+  "where": "kc3"
+ },
+ {
+  "key": "234840",
+  "who": "worker",
+  "zh": "開工啦！我哋自己話事！",
+  "en": "Back to work — on our own terms!",
+  "where": "kc3"
+ },
+ {
+  "key": "fdb019",
+  "who": "goldtooth",
+  "zh": "兄弟，上！",
+  "en": "Boys — get in here!",
+  "where": "kc3"
+ },
+ {
+  "key": "f78abe",
+  "who": "goldtooth",
+  "zh": "熄燈！",
+  "en": "Kill the lights!",
+  "where": "kc3"
+ },
+ {
+  "key": "fc9837",
+  "who": "worker",
+  "zh": "多謝！我落去先！",
+  "en": "Thank you! I'm getting out!",
+  "where": "kc3"
+ },
+ {
+  "key": "2cb614",
+  "who": "auntie",
+  "zh": "大堂仲未攻落！",
+  "en": "We haven't taken the lobby yet!",
+  "where": "kc4"
+ },
+ {
+  "key": "d6f5fe",
+  "who": "auntie",
+  "zh": "今晚，我哋一齊上！",
+  "en": "Tonight, we all go up together!",
+  "where": "kc4"
+ },
+ {
+  "key": "b6b267",
+  "who": "chui",
+  "zh": "一層一層上。",
+  "en": "Floor by floor.",
+  "where": "kc4"
+ },
+ {
+  "key": "ff1c45",
+  "who": "tit",
+  "zh": "食完宵夜先落嚟。",
+  "en": "We'll come down for supper after.",
+  "where": "kc4"
+ },
+ {
+  "key": "311058",
+  "who": "uncle",
+  "zh": "閘房道門未開！",
+  "en": "The gatehouse door's still shut!",
+  "where": "kc4"
+ },
+ {
+  "key": "68f22e",
+  "who": "uncle",
+  "zh": "上面嘅街坊會幫手！小心頭頂！",
+  "en": "The neighbours upstairs will help — mind your heads!",
+  "where": "kc4"
+ },
+ {
+  "key": "d28dfd",
+  "who": "kid",
+  "zh": "阿鐵叔叔！我哋喺上面掉盆栽呀！",
+  "en": "Uncle Tit! We're dropping flowerpots from up here!",
+  "where": "kc4"
+ },
+ {
+  "key": "d964d9",
+  "who": "auntie",
+  "zh": "閘房仲有佢哋嘅人！",
+  "en": "His men still hold the gatehouse!",
+  "where": "kc4"
+ },
+ {
+  "key": "4e787c",
+  "who": "chain",
+  "zh": "上面就係蛇王——你哋上唔到㗎！",
+  "en": "The Serpent King's up there. You'll never make it!",
+  "where": "kc4"
+ },
+ {
+  "key": "749896",
+  "who": "serpent",
+  "zh": "整個城寨，都要跟我姓。",
+  "en": "This whole city will carry my name.",
+  "where": "kc4"
+ },
+ {
+  "key": "5a2d49",
+  "who": "tit",
+  "zh": "城寨唔姓蛇。",
+  "en": "The city carries nobody's name.",
+  "where": "kc4"
+ },
+ {
+  "key": "3bb6df",
+  "who": "serpent",
+  "zh": "……原來城寨唔係我嘅。",
+  "en": "...So the city was never mine.",
+  "where": "kc4"
+ },
+ {
+  "key": "e4a29f",
+  "who": "auntie",
+  "zh": "天光喇！",
+  "en": "The sun's coming up!",
+  "where": "kc4"
+ },
+ {
+  "key": "8e5b8a",
+  "who": "serpent",
+  "zh": "兄弟，食夜粥！",
+  "en": "Brothers — get them!",
+  "where": "kc4"
+ },
+ {
+  "key": "0e920b",
+  "who": "serpent",
+  "zh": "落雨都唔會救你。",
+  "en": "The rain won't save you.",
+  "where": "kc4"
+ },
+ {
+  "key": "f6664e",
+  "who": "serpent",
+  "zh": "我等咗成幾年！",
+  "en": "I've waited years for this!",
+  "where": "kc4"
+ },
+ {
+  "key": "26cc96",
+  "who": "uncle",
+  "zh": "哈哈！有水煲茶喇！",
+  "en": "Ha! Water for the kettle again!",
+  "where": "between2"
+ },
+ {
+  "key": "ae6cf9",
+  "who": "tit",
+  "zh": "虎鶴雙形！收檔！",
+  "en": "Tiger and crane! We're closed!",
+  "where": "musouEnd"
+ },
+ {
+  "key": "c07b45",
+  "who": "chui",
+  "zh": "一針一線，一拳一腳。",
+  "en": "Stitch by stitch, punch by punch.",
+  "where": "intro"
+ },
+ {
+  "key": "8189e5",
+  "who": "chui",
+  "zh": "八斬連環！收線！",
+  "en": "Eight cuts! Tie off the thread!",
+  "where": "musouEnd"
+ }
+]

@@ -7,3 +7,4 @@
 bench/harness/ref/
 bench/out/
 node_modules/
+audio-in/
