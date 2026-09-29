@@ -9,9 +9,10 @@ import { MAP } from './map.js';
 import { buildDingjun } from './maps/dingjun/world.js';
 import { buildAlleys } from './maps/alleys/world.js';
 import { buildRooftops } from './maps/rooftops/world.js';
+import { buildFactories } from './maps/factories/world.js';
 
 /** Render builders by map id. New maps register with one import + one entry. */
-export const WORLDS = { dingjun: buildDingjun, alleys: buildAlleys, rooftops: buildRooftops };
+export const WORLDS = { dingjun: buildDingjun, alleys: buildAlleys, rooftops: buildRooftops, factories: buildFactories };
 
 installHaze();
 // the sun's shadow fades out over the outer 20 % of its box instead of cutting off: soldiers and props at the box edge
